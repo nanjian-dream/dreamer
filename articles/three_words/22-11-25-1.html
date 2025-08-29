@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>宝石 老鼠 起始</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1 id="novel-title">宝石 老鼠 起始</h1>
+      <div class="chapter-info">
+        <span id="chapter-title">作者：南间梦</span>
+      </div>
+    </header>
+
+    <div class="controls">
+      <div class="control-group">
+        <label for="font-size">字体大小:</label>
+        <input type="range" id="font-size" min="14" max="24" value="18" step="1">
+        <span id="font-size-value">18px</span>
+      </div>
+
+      <!-- <div class="control-group">
+        <label for="chapter-select">跳转章节:</label>
+        <select id="chapter-select">
+          <option value="1">第一章 西北有雏凤</option>
+          <option value="2">第二章 白狐儿脸</option>
+          <option value="3">第三章 老黄的剑</option>
+          <option value="4">第四章 湖底老魁</option>
+          <option value="5">第五章 绣冬春雷</option>
+        </select>
+      </div> -->
+
+      <div class="control-group">
+        <button id="night-mode">夜间模式</button>
+        <button onclick="window.location.href='./threewords.html'">返回目录</button>
+        <!-- <button id="bookmark">添加书签</button> -->
+      </div>
+    </div>
+
+    <div class="content" id="novel-content">
+      <p>假如未来的某一天，我已老态龙钟，只能躺在椅子里晒着太阳，短暂清醒的时间，会不会后悔当初年少的好奇？</p>
+      <p>当然，假如还能有未来的话。</p>
+      <p>整件事起始于十七岁那年的盛夏，结束紧张的高考，我回到农村的老家，悠闲享受漫长的假期。</p>
+      <p>我的老家坐落于偏僻的山谷中，是一个几乎与世隔绝的小村庄，村民们过着简单又闲适的生活。</p>
+      <p>村里人口不多，没有学校，孩子们上学必须走出山外。长久以来，村里的孩子们越来越少，我的同龄人都没有再回来。</p>
+      <p>在外面呆得久了，我反而怀念起村里的生活，于是趁着大学开始前的长假回来。</p>
+      <p>不过，恰也是在外面久了，在没有网络的地方呆上一个星期，而且每天只能一个人游荡，我也不免开始觉得日子煎熬起来。</p>
+      <p>坐在院子里欣赏大山的枯燥持续了半个月，我终于忍不住想要离开的那天晚上，夏夜的暑气让我在硬木板床上辗转难眠。</p>
+      <p>焦躁到愤怒的时候，窸窸窣窣的声音传入我的耳中。</p>
+      <p>像是某种动物的脚步声，或是昆虫振翅的细碎声响，抑或是人故意放轻的脚步声。</p>
+      <p>潮湿闷热的山里不乏蚊虫鼠蚁，半夜听到任何声响都不奇怪。</p>
+      <p>总之，琐碎的声音让我更加不适。</p>
+      <p>“明天回去太好了。”我如此想道，愤懑的心情渐渐缓解。</p>
+      <p>然而，这次的声响和以前听说的完全不同。</p>
+      <p>与其说是像动物或起夜的家人的脚步，后来渐渐变成不明语言的呓语呢喃。</p>
+      <p>没错，那是人类的声音——我听上去是那样。</p>
+      <p>一开始我以为村里有人学会我不了解的语言，但很快反应过来……</p>
+      <p>正如前言，村里留下的都是上了年纪的老人，连上一辈的叔伯婶姨都离开了这个迈向死亡的村庄。</p>
+      <p>而且，村子实际上很小，小到每天出门就能和所有人见上一面。</p>
+      <p>毫无疑问，我所见的依然是那些曾经熟悉过的苍老面孔。</p>
+      <p>某些不安的揣测浮现在我的脑海。比如，潜逃的杀人犯之类……</p>
+      <p>村子四面都是高山，潜藏安身连上帝都找不到。</p>
+      <p>那种不安持续的时间不长，却足以唤醒我陈年的回忆。</p>
+      <p>“记住，晚上不要外出，不要回应任何声音。”</p>
+      <p>想不起谁给予我的告诫，只有干枯发皱如树皮的嘴唇和脸庞，深深刻在内心的阴影中。</p>
+      <p>我以为早已忘却，没想到回想起来，凶狠的声音依然响彻耳畔，仿佛那人正在耳边恶狠狠地诅咒一样。</p>
+      <p>这让我想起关于村庄的古老故事。</p>
+      <p>和所有拥有历史的村庄一样，总有些说不清起源的古老故事口口相传，一代又一代之后，谁也不知道原本的故事到底是什么版本。</p>
+      <p>总结而言，老人们说的不同的故事，大抵是村里曾经祭拜着古老的神明，人心变了，神明也变了。</p>
+      <p>起初保佑着村庄的平安和春雨冬雪粮食丰收。</p>
+      <p>渐渐地，神明愈发暴躁，暴雨山洪干旱愈发频繁。</p>
+      <p>演变到最后，神明降临了——化身成令人恐惧的魔鬼，将曾今亵渎了神明的那些人的后代抓走吞食。</p>
+      <p>也就是说，我们成了曾经光明的神明发泄愤恨的饵食。</p>
+      <p>小时候一度被吓得不敢在夜里外出，长大以后才明白，那不过是老人们吓唬孩子的玩笑罢了，和“不乖就把你扔给狼吃掉”是一样的道理。毕竟半夜外出，一不小心就会走进绵延不断的大山，迷失在山里。</p>
+      <p>此时此刻，我却怀疑了自己的判断。</p>
+      <p>也许老人说的是真的。</p>
+      <p>无端地觉得冷了起来，闷热而汗湿的后背瑟缩发抖。</p>
+      <p>我蜷缩着坐在床头，将单薄的被子裹紧身体。</p>
+      <p>窸窣的呢喃变成嘈杂的低语，混杂了某种令人不适的声音。像是舍友磨牙的声音，像是狗啃咬骨头的声音，像是野兽撕扯尸体的声音。</p>
+      <p>此起彼伏的声音之中，又有一个声音格外明晰。</p>
+      <p>那是我的名字。</p>
+      <p>那个声音一遍又一遍地重复着我的名字，一次又一次、孜孜不倦、乐此不疲地呼唤着我。</p>
+      <p>我不想听，不去听。可是就算捂紧了耳朵，那些声音仍然越来越响亮。</p>
+      <p>它们搅弄着我的内脏，耳鸣、眩晕和恶心随之袭来。</p>
+      <p>我趴在床边干呕，难受得把手指插入喉咙催吐，终于吐出些许黑色的黏稠的液体。</p>
+      <p>那些液体不是我吃下的食物会消化腐烂而成的。</p>
+      <p>“把鼓膜戳破就好了。”</p>
+      <p>焦虑和恐慌化作跃跃欲试，手指刺耳耳道，一点点往里面突进。</p>
+      <p>难以忍受的疼痛撕裂我的神经，那些声音终于消失了。</p>
+      <p>“我就知道这招有效。”</p>
+      <p>我得意地笑起来。</p>
+      <p>当然，我没有真的刺破耳膜，想来也是不可能做到的。</p>
+      <p>只不过是所有的声音，连同我的心声一起消失了而已。</p>
+      <p>只是，声音消失之后，我莫名地失落，像是失去了同伴的寂寞席卷了我。</p>
+      <p>然后，又有声音出现了。</p>
+      <p>这次我没有紧张，因为那是我熟悉的声音。</p>
+      <p>果然，一只老鼠从墙角的阴影里献身，红色的小眼睛直勾勾地看着我。</p>
+      <p>好有趣的小玩意儿。我看着它笑了。</p>
+      <p>大概常年和人相处，巴掌大的小老鼠丝毫不畏惧人，嘴巴一动一动的，大概在咀嚼刚从厨房偷的食物。</p>
+      <p>不知怎的，我觉得它在和我说话。</p>
+      <p>“跟我来……”</p>
+      <p>它这么说。</p>
+      <p>堪比童话的好故事。</p>
+      <p>虽然再过两个月就要成年的我不再相信童话……</p>
+      <p>“每天呆坐在家里快无聊死了，去看看也挺有趣的。”</p>
+      <p>我下床靠近老鼠，老鼠果然转身跑了。</p>
+      <p>“切。”</p>
+      <p>我不甘地返回床边，发现老鼠停在门口，回头看着我。</p>
+      <p>“来呀，来呀。”</p>
+      <p>它这么说。</p>
+      <p>“好像确实有趣，去看看会发生什么有趣的事情。会身体变小进入老鼠洞，然后和老鼠公主跳舞吗？”</p>
+      <p>于是，一鼠一人一前一后离开了家。</p>
+      <p>真是段漫长的旅途。</p>
+      <p>我们离开了村子，进了长辈们从来不允许进入的山里。</p>
+      <p>老实说，陌生的山让我感到新奇，也很有趣。</p>
+      <p>我跟随着老鼠进入一个黑黢黢的山洞。可惜不是老鼠洞，是实实在在的比宽敞的山洞。</p>
+      <p>月光到洞口就止住了，里面伸手不见五指。我却不担心看不清路，因为有无数的红色的光点和“叽叽叽叽”欢欣雀跃的声音为我指路。</p>
+      <p>七弯八拐走了很久，我猜外面天已经亮了，脚底板也疲累而疼痛了，前方的老鼠停下脚步。</p>
+      <p>老鼠两只后脚着地直立起来，小手指着面前的石台。</p>
+      <p>“就是这个，是你的。”</p>
+      <p>它这么说。</p>
+      <p>我靠近石台，看到了镶嵌在里面的东西。</p>
+      <p>那是一枚透明的石头。</p>
+      <p>“给我的？”</p>
+      <p>老鼠点点头。</p>
+      <p>孔洞里的石头不紧，我轻松地把石头拿了起来。老鼠们爆发出振奋的欢呼，堪比盛大又恢弘壮阔的仪式。</p>
+      <p>我把石头举起来，凑到眼前观看。</p>
+      <p>原来是一枚漂亮的宝石。</p>
+      <p>宝石骤然射出七彩的光芒，刺痛我的眼眸，我看不清任何东西。</p>
+      <p>视界里只有无数扭曲的、无法用言语形容的、瑰丽绚烂的、不属于人间的光彩。</p>
+      <p>光彩之中，我看到那些老鼠，数以亿万计的老鼠。</p>
+      <p>它们争相朝我涌来，解压交叠成巨大的山脉。</p>
+      <p>那座山脉张开巨口，露出无数闪烁着红色光点的尖齿，朝我的头顶落了下来。</p>
+      <p>完</p>
+      <p>22.11.25</p>
+    </div>
+
+    <div class="chapter-nav">
+      <button>无上页</button>
+      <button onclick="window.location.href='./22-11-25-2.html'">复合 撒谎 实力</button>
+    </div>
+  </div>
+
+  <script>
+    // 字体大小调整
+    const fontSizeSlider = document.getElementById('font-size');
+    const fontSizeValue = document.getElementById('font-size-value');
+    const content = document.getElementById('novel-content');
+
+    fontSizeSlider.addEventListener('input', function () {
+      const size = this.value;
+      content.style.fontSize = size + 'px';
+      fontSizeValue.textContent = size + 'px';
+    });
+
+    // 夜间模式切换
+    const nightModeBtn = document.getElementById('night-mode');
+    nightModeBtn.addEventListener('click', function () {
+      document.body.classList.toggle('night-mode');
+      this.textContent = document.body.classList.contains('night-mode') ? '日间模式' : '夜间模式';
+    });
+
+    // 章节跳转
+    const chapterSelect = document.getElementById('chapter-select');
+    chapterSelect.addEventListener('change', function () {
+      const chapter = this.value;
+      // 这里应该加载对应章节的内容
+      alert('将加载第' + chapter + '章内容');
+      updateChapterInfo(chapter);
+    });
+
+    // 上一章/下一章
+    document.getElementById('prev-chapter').addEventListener('click', function () {
+      const currentChapter = parseInt(chapterSelect.value);
+      if (currentChapter > 1) {
+        chapterSelect.value = currentChapter - 1;
+        chapterSelect.dispatchEvent(new Event('change'));
+      } else {
+        alert('已经是第一章了');
+      }
+    });
+
+    document.getElementById('next-chapter').addEventListener('click', function () {
+      const currentChapter = parseInt(chapterSelect.value);
+      const totalChapters = chapterSelect.options.length;
+      if (currentChapter < totalChapters) {
+        chapterSelect.value = currentChapter + 1;
+        chapterSelect.dispatchEvent(new Event('change'));
+      } else {
+        alert('已经是最后一章了');
+      }
+    });
+
+    // 书签功能
+    document.getElementById('bookmark').addEventListener('click', function () {
+      const currentChapter = chapterSelect.options[chapterSelect.selectedIndex].text;
+      alert('已添加书签: ' + currentChapter);
+    });
+
+    // 更新章节信息
+    function updateChapterInfo(chapterNum) {
+      const chapterTitle = chapterSelect.options[chapterNum - 1].text;
+      document.getElementById('chapter-title').textContent = chapterTitle;
+
+      // 这里应该根据章节更新内容
+      // 实际应用中可以通过AJAX加载对应章节的内容
+    }
+  </script>
+</body>
+
+</html>
+<!-- 
+## 功能说明
+
+这个小说阅读页面包含以下功能：
+
+1. **章节导航**：可以通过下拉菜单选择章节，或使用"上一章"/"下一章"按钮导航
+2. **字体大小调整**：使用滑块控件调整正文字体大小
+3. **夜间模式**：切换日间/夜间阅读模式，保护眼睛
+4. **书签功能**：可以添加书签记录阅读进度
+5. **响应式设计**：适配不同屏幕尺寸的设备
+
+## 如何使用
+
+1. 将代码复制到一个文本编辑器中
+2. 保存为 `.html` 文件（例如 `novel-reader.html`）
+3. 用浏览器打开该文件即可使用
+
+## 扩展建议
+
+在实际应用中，你可以：
+
+1. 使用AJAX从服务器动态加载章节内容
+2. 添加用户登录系统以保存阅读进度和设置
+3. 实现更复杂的书签和笔记功能
+4. 添加目录侧边栏
+5. 集成支付系统用于购买付费章节
+
+这个基础版本可以根据你的具体需求进行修改和扩展。 -->

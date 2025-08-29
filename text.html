@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>小说阅读器</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Microsoft YaHei", sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f8f5ee;
+      transition: all 0.3s ease;
+      padding: 20px;
+    }
+
+    body.night-mode {
+      background-color: #222;
+      color: #ddd;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+    }
+
+    .night-mode .container {
+      background-color: #333;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .night-mode header {
+      border-bottom-color: #444;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .chapter-info {
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    .night-mode .chapter-info {
+      color: #aaa;
+    }
+
+    .content {
+      font-size: 18px;
+      margin-bottom: 40px;
+      text-indent: 2em;
+    }
+
+    .content p {
+      margin-bottom: 1em;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 8px 15px;
+      background-color: #4a6ea9;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 0 5px;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #3a5a8f;
+    }
+
+    .night-mode button {
+      background-color: #555;
+    }
+
+    .night-mode button:hover {
+      background-color: #666;
+    }
+
+    select,
+    input {
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 0 5px;
+    }
+
+    .night-mode select,
+    .night-mode input {
+      background-color: #444;
+      color: #ddd;
+      border-color: #555;
+    }
+
+    .chapter-nav {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+    }
+
+    @media (max-width: 600px) {
+      .content {
+        font-size: 16px;
+      }
+
+      .controls {
+        flex-direction: column;
+      }
+
+      .control-group {
+        margin-bottom: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1 id="novel-title">雪中悍刀行</h1>
+      <div class="chapter-info">
+        <span id="chapter-title">第一章 西北有雏凤</span>
+      </div>
+    </header>
+
+    <div class="controls">
+      <div class="control-group">
+        <label for="font-size">字体大小:</label>
+        <input type="range" id="font-size" min="14" max="24" value="18" step="1">
+        <span id="font-size-value">18px</span>
+      </div>
+
+      <div class="control-group">
+        <label for="chapter-select">跳转章节:</label>
+        <select id="chapter-select">
+          <option value="1">第一章 西北有雏凤</option>
+          <option value="2">第二章 白狐儿脸</option>
+          <option value="3">第三章 老黄的剑</option>
+          <option value="4">第四章 湖底老魁</option>
+          <option value="5">第五章 绣冬春雷</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <button id="night-mode">夜间模式</button>
+        <button id="bookmark">添加书签</button>
+      </div>
+    </div>
+
+    <div class="content" id="novel-content">
+      <p>西北边陲，凉州城外三十里，有一座不起眼的土坯院子。</p>
+      <p>院中一株老槐树下，坐着个身穿粗布衣衫的少年，约莫十七八岁年纪，眉清目秀，只是脸色略显苍白，此刻正捧着一本泛黄的旧书看得入神。</p>
+      <p>少年姓徐名凤年，是这北凉王府的世子殿下。</p>
+      <p>说是世子，其实比寻常富贵人家的少爷还不如。自从三年前父亲徐骁被封为北凉王，奉命镇守西北，他便被送到了这处偏僻小院，美其名曰"静养"，实则与软禁无异。</p>
+      <p>徐凤年对此倒也不甚在意，每日读书习字，偶尔练练那套不知从何处学来的古怪拳法，日子过得倒也清闲。</p>
+      <p>这日正看到精彩处，忽听院门被人推开，一个身穿灰布长袍的老者缓步走了进来。</p>
+      <p>"老黄，今日怎么来得这般早？"徐凤年头也不抬地问道。</p>
+      <p>被称作老黄的老者咧嘴一笑，露出满口黄牙："少爷，王爷派人来了，说是请您回府一趟。"</p>
+      <p>徐凤年闻言，眉头微皱："所为何事？"</p>
+      <p>老黄搓了搓手，低声道："听说是朝廷来了圣旨，要给少爷您赐婚。"</p>
+      <p>"赐婚？"徐凤年终于抬起头来，眼中闪过一丝诧异，"与谁家的小姐？"</p>
+      <p>"这个老奴就不清楚了。"老黄摇摇头，"不过听传话的人说，好像是京城某位大人物的千金。"</p>
+      <p>徐凤年沉默片刻，忽然轻笑一声："有意思。三年不闻不问，一开口就要决定我的终身大事。"</p>
+      <p>他将手中的书卷轻轻合上，站起身来拍了拍衣袍上的尘土："走吧，回去看看我那父王又给我准备了什么'惊喜'。"</p>
+    </div>
+
+    <div class="chapter-nav">
+      <button id="prev-chapter">上一章</button>
+      <button id="next-chapter">下一章</button>
+    </div>
+  </div>
+
+  <script>
+    // 字体大小调整
+    const fontSizeSlider = document.getElementById('font-size');
+    const fontSizeValue = document.getElementById('font-size-value');
+    const content = document.getElementById('novel-content');
+
+    fontSizeSlider.addEventListener('input', function () {
+      const size = this.value;
+      content.style.fontSize = size + 'px';
+      fontSizeValue.textContent = size + 'px';
+    });
+
+    // 夜间模式切换
+    const nightModeBtn = document.getElementById('night-mode');
+    nightModeBtn.addEventListener('click', function () {
+      document.body.classList.toggle('night-mode');
+      this.textContent = document.body.classList.contains('night-mode') ? '日间模式' : '夜间模式';
+    });
+
+    // 章节跳转
+    const chapterSelect = document.getElementById('chapter-select');
+    chapterSelect.addEventListener('change', function () {
+      const chapter = this.value;
+      // 这里应该加载对应章节的内容
+      alert('将加载第' + chapter + '章内容');
+      updateChapterInfo(chapter);
+    });
+
+    // 上一章/下一章
+    document.getElementById('prev-chapter').addEventListener('click', function () {
+      const currentChapter = parseInt(chapterSelect.value);
+      if (currentChapter > 1) {
+        chapterSelect.value = currentChapter - 1;
+        chapterSelect.dispatchEvent(new Event('change'));
+      } else {
+        alert('已经是第一章了');
+      }
+    });
+
+    document.getElementById('next-chapter').addEventListener('click', function () {
+      const currentChapter = parseInt(chapterSelect.value);
+      const totalChapters = chapterSelect.options.length;
+      if (currentChapter < totalChapters) {
+        chapterSelect.value = currentChapter + 1;
+        chapterSelect.dispatchEvent(new Event('change'));
+      } else {
+        alert('已经是最后一章了');
+      }
+    });
+
+    // 书签功能
+    document.getElementById('bookmark').addEventListener('click', function () {
+      const currentChapter = chapterSelect.options[chapterSelect.selectedIndex].text;
+      alert('已添加书签: ' + currentChapter);
+    });
+
+    // 更新章节信息
+    function updateChapterInfo(chapterNum) {
+      const chapterTitle = chapterSelect.options[chapterNum - 1].text;
+      document.getElementById('chapter-title').textContent = chapterTitle;
+
+      // 这里应该根据章节更新内容
+      // 实际应用中可以通过AJAX加载对应章节的内容
+    }
+  </script>
+</body>
+
+</html>
+<!-- 
+## 功能说明
+
+这个小说阅读页面包含以下功能：
+
+1. **章节导航**：可以通过下拉菜单选择章节，或使用"上一章"/"下一章"按钮导航
+2. **字体大小调整**：使用滑块控件调整正文字体大小
+3. **夜间模式**：切换日间/夜间阅读模式，保护眼睛
+4. **书签功能**：可以添加书签记录阅读进度
+5. **响应式设计**：适配不同屏幕尺寸的设备
+
+## 如何使用
+
+1. 将代码复制到一个文本编辑器中
+2. 保存为 `.html` 文件（例如 `novel-reader.html`）
+3. 用浏览器打开该文件即可使用
+
+## 扩展建议
+
+在实际应用中，你可以：
+
+1. 使用AJAX从服务器动态加载章节内容
+2. 添加用户登录系统以保存阅读进度和设置
+3. 实现更复杂的书签和笔记功能
+4. 添加目录侧边栏
+5. 集成支付系统用于购买付费章节
+
+这个基础版本可以根据你的具体需求进行修改和扩展。 -->
