@@ -1,0 +1,392 @@
+#ui-bar-body>:not(:first-child) {
+  margin-top: 0;
+}
+
+#story-author {
+  margin-top: 0.5rem;
+}
+
+#ui-dialog-titlebar {
+  border-radius: 10px 10px 0 0
+}
+
+#ui-dialog-body {
+  border-radius: 0 0 10px 10px
+}
+
+#ui-dialog-close {
+  border-radius: 0 10px 0 0
+}
+
+#ui-dialog-body button {
+  border-radius: 5px
+}
+
+/* 侧边栏跳转 */
+.side-bar-link {
+  display: flex;
+  justify-content: center;  /* 水平居中 */
+  align-items: center;      /* 垂直居中 */
+  font-size: 14px;
+}
+
+.side-bar-link a {
+  width: calc(100% - 5px);
+  margin: 10px 2px;
+  padding: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+  color: #ccc;
+}
+
+.side-bar-link a:hover {
+  color: #0cbc3e;
+  border: 1px solid #0cbc3e;
+  background-color: rgba(255, 255, 255, 0.1);
+  font-weight: 700;
+}
+
+/* 封面 */
+.story-card {
+  display: flex;
+  flex-direction: column;
+  padding: 0 2rem;
+  margin: 1rem auto;
+  width: 50%;
+  height: 650px; 
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.story-card-title {
+  position: relative;
+  flex: 0 0 auto; /* 固定高度，不伸缩 */
+  padding: 1.5rem 0 0.5rem 0; /* 添加内边距避免内容紧贴 */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.story-card-title span:last-child {
+  position: absolute;
+  right: 2rem;
+  bottom: 0.5rem;
+  font-size: 14px;
+}
+
+.story-card-content {
+  flex: 1; /* 自动填充剩余空间 */
+  min-height: 0; /* 修复flex子元素高度限制 */
+  overflow-y: auto;
+  padding: 2rem 0; /* 上下内边距 */;
+  line-height: 1.6;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  color: #f0f0f0;
+}
+
+.story-card-footer {
+  flex: 0 0 auto; /* 固定高度，不伸缩 */
+  padding: 1.5rem 0; /* 添加内边距避免内容紧贴 */
+}
+
+.story-card-footer a {
+  transition: all 0.3s ease;
+  background: goldenrod;
+  margin: 0.5rem 0;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  text-align: center;
+  color: #000;
+  text-decoration: none;
+}
+
+.story-card a:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+  color: gold;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* 卡片样式 */
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem; /* 卡片之间的间距 */
+  font-size: 14px;
+  color: white;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 25%;
+  height: 300px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 15px;
+  background-color: rgba(152, 143, 143, 0.3);
+  margin: 0.5rem;
+  padding: 15px;
+  text-align: center;
+  overflow: hidden;
+  position: relative; /* 新增相对定位 */
+}
+
+/* 调整后的卡片标题 */
+.card-title {
+  position: relative;
+  border-bottom: 1px solid #ccc;
+  font-weight: 700;
+  font-size: 18px;
+  color: #5ed164;
+  flex: 0 0 8%; /* 固定高度占比10%（不收缩、不拉伸） */
+  letter-spacing: 1px;
+}
+
+.card-title span:last-child {
+  position: absolute;
+  right: 2rem;
+  bottom: 2px;
+  font-size: 14px;
+}
+
+/* 调整后的卡片内容区（关键修改：增加滚动支持） */
+.card-content {
+  display: block;
+  height: 70%;
+  text-align: center;
+  padding-top: 15px;
+  flex: 1 1 84%; /* 占比70%（可拉伸/收缩） */
+}
+
+/* 调整后的卡片底部 */
+.card-footer {
+  flex: 0 0 8%; /* 固定高度占比15%（不收缩、不拉伸） */
+  margin-top: auto;
+  display: block;
+  /* height: 8%; */
+}
+
+.card button {
+  margin: 2px auto;
+  padding: 5px 10px;
+  color: #eee;
+  border-radius: 5px;
+  background-color: #158;
+  text-decoration: none;
+}
+
+.card button:hover {
+  color: rgb(26, 11, 11);
+  background-color: #27a;
+}
+
+/* 属性条 */
+.showStates {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.states-bar {
+  flex-grow: 1;
+  width: calc(100% - 10px);
+  height: 20px;
+  background: linear-gradient(to bottom, #555, #333);
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.2),
+    inset 0 -1px 2px rgba(255, 255, 255, 0.1);
+  position: relative;
+  /* 添加相对定位 */
+}
+
+.states-bar-fill {
+  height: 100%;
+  background: linear-gradient(to right, #4CAF50, #81C784);
+  transition: width 0.1s linear;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 0.8em;
+  color: white;
+  box-shadow:
+    3px 0 6px -1px rgba(255, 255, 255, 0.5),
+    inset 0 2px 4px rgba(255, 255, 255, 0.3),
+    inset 0 -3px 5px rgba(0, 0, 0, 0.3);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.states-bar-text {
+  position: absolute;
+  left: 50%;
+  /* 水平居中 */
+  top: 50%;
+  /* 垂直居中 */
+  transform: translate(-50%, -50%);
+  /* 精确居中 */
+  line-height: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+  /* 确保文本在进度条上方 */
+  z-index: 2;
+  text-align: center;
+}
+
+/*----提示工具css----*/
+.toolTip {
+  position: relative;
+  display: inline-block;
+  /* border-bottom: 1px dotted white; */
+}
+
+.toolTip .toolTipText {
+  visibility: hidden;
+  width: 2rem;
+  background-color: rgba(0, 0, 0, 0.8); /* 透明度为0.3的月白色背景 */
+  color: #98ff98; /* 薄荷绿文字颜色 */
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -20px;
+  opacity: 0;
+  transition: opacity 0.5s;
+  pointer-events: none; /* 防止toolTip被鼠标事件触发 */
+  border: 1px solid black; /* 添加1px黑色边缘轮廓 */
+  font-size: 12px;
+}
+
+.toolTip .toolTipText::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: rgba(255, 250, 250, 0.7) transparent}
+
+  .toolTip .toolTipText::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: rgba(255, 250, 250, 0.7) transparent transparent; /* 箭头颜色与背景一致 */
+}
+
+.toolTip:hover .toolTipText {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* 生存时间 */
+.liveDays {
+  padding: 0.5rem 1rem;
+  border: 1px dotted #555;
+  border-radius: 50%;
+  background-color: #555;
+  color: gold;
+  font-weight: 700;
+}
+ 
+/* 资源框 */
+.resBox {
+  display: flex;
+}
+
+.resBox .resItem {
+  width: 2rem;
+  height: 1rem;
+  margin: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-align: center;
+  line-height: 1rem;
+  font-weight: 700;
+}
+
+/* 分配属性 */
+.states {
+  display: inline-flex;
+  align-items: center;
+  width: 5rem;
+  height: 1.8rem;
+}
+
+.change-states a {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  font-weight: 700;
+  font-size: 18px;
+  background-color: #555;
+  border-radius: 5px;
+  text-decoration: none;
+  margin: 0 1px;
+}
+
+.message {
+  margin: 0 auto;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  height: 80%;
+  overflow: auto;
+  text-align: left;
+  font-size: 14px;
+}
+
+.make .useItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 1.5rem;
+  margin-top: 0.5rem;
+  padding-left: 0.5rem;
+}
+
+.make .useItem a,
+.make .useItem button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 0 0.5rem;
+  font-size: 12px;
+}
+
+.make .useItem a {
+  width: 0.5rem;
+  border: 1px solid #ccc;
+}
+
+.make .useItem select {
+  width: 4rem;
+  font-size: 14px;
+}
+
+/* 保持原有按钮样式 */
+.make .useItem button {
+  margin: 0;
+  font-size: 14px;
+  /* 其他原有button样式保持不变 */
+}

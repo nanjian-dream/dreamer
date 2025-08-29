@@ -1,0 +1,1224 @@
+:: StoryData
+{
+  "ifid": "2C80E3B3-8A66-41FF-94D1-062C16864D72",
+  "format": "SugarCube",
+  "format-version": "2.37.2"
+}
+
+:: StoryTitle
+末日地堡
+
+:: StoryAuthor
+<div style="text-align: right; font-size: 14px">
+  //作者：南间梦//<br>
+  <span style="font-size: 10px">原作：UP主天辰TCG</span>
+</div>
+<hr>
+
+:: StoryInit
+<!-- 健康和精神 -->
+<<set $hp = 5, $max_hp = 10>>
+<<set $san = 5, $max_san = 10>>
+<!-- 基础资源 -->
+<<set $food = 5, $water = 5, $electric = 5>>
+/* 生存天数 */
+<<set $day = 1>>
+/* 食物、水、电上限 */
+<<set $upperLimit = 9>>
+/* 信息记录 */
+/* 搜寻 */
+<<set $searchMes = []>>
+<<set $abysMes = []>>
+/* 休息 */
+<<set $restMes = []>>
+/* 修理、制作、强化 */
+<<set $repairMes = []>>
+<<set $makeMes = []>>
+<<set $upgradeMes = []>>
+/* 事件 */
+<<set $eventMes = []>>
+/*
+  制作：工具包(使用状态)，简易医疗包，简单娱乐用品
+  强化（一次性）：发电机，储物空间，隔音墙
+ */
+<<set $toolBag = false, $useToolBag = false>>
+<<set $hpBag = false>>
+<<set $sanTool = false>>
+<<set $eleTool = false>>
+<<set $resTool = false>>
+<<set $restTool = false>>
+
+/* 可执行行动次数 */
+<<set $action = 1>>
+/* 使用极限求生 */
+<<set $useSkill = false>>
+
+/* 卡片开关 */
+<<set $flag = {
+  search: false,
+  abys: false,
+  rest: false,
+  make: false,
+  upgrade: false,
+  repair: false,
+  dailyEvent: false
+}>>
+
+/* 水电归零 */
+<<set $zeroFood = 2>>
+<<set $zeroWater = 2>>
+<<set $zeroElectric = 2>>
+
+/* 结局星级、标题 */
+<<set $endStart = 0>>
+<<set $endTitle = "">>
+
+/* 全部事件 */
+<<set $events = [
+  {
+    content: `你在储藏室的角落发现了一些遗留下来的物资。`,
+    effect: ["food", "water"],
+    effect_value: [1, 1]
+  },
+  {
+    content: `你意外发现电路中断的原因，并顺利修复了部分发电设备。`,
+    effect: ["electric"],
+    effect_value: [2]
+  },
+  {
+    content: `你找到了一台还能播放的旧录音机，熟悉的旋律让你感到一丝希望。`,
+    effect: ["san"],
+    effect_value: [1]
+  },
+  {
+    content: `你清理储物柜时发现了一些过期但勉强能用的医疗用品。`,
+    effect: ["hp"],
+    effect_value: [1]
+  },
+  {
+    content: `无线电中偶然传来救援队的消息，他们正在靠近。`,
+    effect: ["san"],
+    effect_value: [1]
+  },
+  {
+    content: `今天一切正常，没有发生任何特别的事情。`,
+    effect: [""],
+    effect_value: []
+  },
+  {
+    content: `你清理储物柜时发现了一些过期但勉强能用的医疗用品。`,
+    effect: ["hp"],
+    effect_value: [1]
+  },
+  {
+    content: `你在储藏室发现了一些储存完好的水罐。`,
+    effect: ["water"],
+    effect_value: [2]
+  },
+  {
+    content: `你清理储物柜时发你调整了空气过滤器的参数，提升了效率。`,
+    effect: ["electric"],
+    effect_value: [1]
+  },
+  {
+    content: `空气过滤器突然停止工作，空气质量迅速下降。`,
+    effect: ["electric", "hp"],
+    effect_value: [-1, -1]
+  },
+  {
+    content: `老鼠啃坏了储备食物，并污染了饮用水。`,
+    effect: ["food", "water"],
+    effect_value: [-1, -1]
+  },
+  {
+    content: `孤独和恐惧让你整晚无法入睡。`,
+    effect: ["san"],
+    effect_value: [-1]
+  },
+  {
+    content: `发电机出现了短路，电力系统发生故障。`,
+    effect: ["electric"],
+    effect_value: [-2]
+  },
+  {
+    content: `地堡的供水管道出现了泄漏，储备水大量流失。`,
+    effect: ["water"],
+    effect_value: [-2]
+  },
+  {
+    content: `你手上的小伤口开始发炎，感染恶化。`,
+    effect: ["hp"],
+    effect_value: [-1]
+  },
+  {
+    content: `你试图调整无线电，却什么信号也没有收到。`,
+    effect: ["san"],
+    effect_value: [-1]
+  },
+  {
+    content: `一场地震使地堡的结构受到损害，设备也出现了问题。`,
+    effect: ["electric", "san"],
+    effect_value: [-1, -1]
+  },
+  {
+    content: `你发现储藏室的食物已经发霉，无法再食用。`,
+    effect: ["food"],
+    effect_value: [-2]
+  },
+  {
+    content: `连续几天的劳作让你的身体承受不住。`,
+    effect: ["hp", "san"],
+    effect_value: [-1, -1]
+  },
+  {
+    content: `电力不足，地堡陷入一片黑暗。`,
+    effect: ["san"],
+    effect_value: [-1]
+  },
+  {
+    content: `
+    地堡的发电机出现了严重老化，运转效率下降。`,
+    effect: ["electric"],
+    effect_value: [-1]
+  },
+  {
+    content: `你发现了一张旧照片，回忆起了末日前的生活和失去的亲人。`,
+    effect: ["san"],
+    effect_value: [-1]
+  },
+  {
+    content: `空气过滤器失效，地堡内弥漫着一股刺鼻的气味。`,
+    effect: ["hp"],
+    effect_value: [-1]
+  },
+  {
+    content: `储藏室的一部分结构坍塌，压毁了部分物资。`,
+    effect: ["food", "water"],
+    effect_value: [-1, -1]
+  },
+  {
+    content: `你被地堡中的孤独和无助彻底摧垮了。`,
+    effect: ["san"],
+    effect_value: [-2]
+  },
+  {
+    content: `供水系统堵塞，修复需要大量时间。`,
+    effect: ["water"],
+    effect_value: [-2]
+  },
+  {
+    content: `备用电池已经耗尽，电力储备进一步紧张。`,
+    effect: ["electric"],
+    effect_value: [-2]
+  },
+  {
+    content: `你找到了一本旧日记，里面记录了末日前的生活点滴。`,
+    effect: ["san"],
+    effect_value: [1]
+  },
+  {
+    content: `你隐约听到深渊传来模糊的声音，不清楚是什么。`,
+    effect: [""],
+    effect_value: []
+  },
+  {
+    content: `你发现老鼠在地堡中出没，但它们暂时没有造成损害。`,
+    effect: ["san"],
+    effect_value: [-1]
+  },
+  {
+    content: `你找到一本详尽的生存指南，里面有一些使用的技巧。`,
+    effect: ["something"],
+    effect_value: [2]
+  },
+]>>
+
+:: StoryCaption
+<<if $hp > $max_hp>>
+  <<set $hp = $max_hp>>
+<</if>>
+<<if $san > $max_san>>
+  <<set $san = $max_san>>
+<</if>>
+<<if $hp <= 0>>
+  <<set $hp = 0>>
+<</if>>
+<<if $san <= 0>>
+  <<set $san = 0>>
+<</if>>
+<<if $food <= 0>>
+  <<set $food = 0>>
+<</if>>
+<<if $water <= 0>>
+  <<set $water = 0>>
+<</if>>
+<<if $electric <= 0>>
+  <<set $electric = 0>>
+<</if>>
+<<if $food >= $upperLimit>>
+  <<set $food = $upperLimit>>
+<</if>>
+<<if $water >= $upperLimit>>
+  <<set $water = $upperLimit>>
+<</if>>
+<<if $electric >= $upperLimit>>
+  <<set $electric = $upperLimit>>
+<</if>>
+
+<div class="liveDays toolTip">
+  $day
+  <span class="toolTipText">生存时间</span>
+</div>
+<<do tag "属性">>
+  <div class="showStates">
+    <div class="states-bar">
+      <span class="states-bar-text">健康：$hp / $max_hp</span>
+      <div class="states-bar-fill" @style="'width: ' + $hp / $max_hp * 100 + '%'"></div>
+    </div>
+    <div class="states-bar">
+      <span class="states-bar-text">精神：$san / $max_san</span>
+      <div class="states-bar-fill" @style="'width: ' + $san / $max_san * 100 + '%'"></div>
+    </div>
+  </div>
+<</do>>
+<<do tag "资源">>
+  <div class="resBox">
+    <div class="resItem toolTip" style="background-color: #523800">
+      $food
+      <span class="toolTipText">食物</span>
+    </div>
+    <div class="resItem toolTip" style="background-color: blue">
+      $water
+      <span class="toolTipText">水</span>
+    </div>
+    <div class="resItem toolTip" style="background-color: orange">
+      $electric
+      <span class="toolTipText">电力</span>
+    </div>
+  </div>
+<</do>>
+
+:: Start
+<div class="story-card">
+  <div class="story-card-title">游戏说明</div>
+  <div class="story-card-content">
+    1. 每天只能进行一次行动选择<br>
+    2. 每天会消耗@@1@@点食物、@@1@@点水和@@1@@点电力资源<br>
+    3. 三项资源，以及健康、精神上限为9，超过上限不能保存<br>
+    4. 每天执行的操作顺序：''消耗资源 -> 选择行动 -> 每日事件''<br>
+    5. 食物和水耗尽后，第二天开始，每天降低1点健康，直到再次获得食物和水停止<br>
+    6. 电力耗尽后，精神会降低，直至电力恢复<br>
+    7. 健康和精神中任意一项耗尽，或生存超过20天，游戏结束<br>
+    8. 祝游戏愉快
+  </div>
+  <div class="story-card-footer">
+    [[开始|简介]]
+  </div>
+</div>
+
+:: 简介
+<div class="story-card">
+  <div class="story-card-title">开始</div>
+  <div class="story-card-content">
+    当你醒来时，地堡的灯光闪烁着微弱的橙色光芒，耳边是空气过滤器单调的嗡嗡声。<br>
+    外面的世界已经被毁灭性的灾难吞噬。<br>
+    没有人知道这场末日是从什么时候开始的，也没有人知道它是否会结束——是核战的余波、致命的病毒，还是自然的最后一击？<br>
+    你只知道，你是幸运的，或者说不幸的——你成功进入了这座废弃地堡，暂时躲过了外界的死亡威胁。<br>
+    但“安全”只是短暂的错觉。<br>
+    地堡里的资源已经开始枯竭，设备也年久失修，随时可能完全瘫痪。<br>
+    更糟的是，长时间的孤独和无尽的恐惧正逐渐侵蚀你的意志。<br>
+    你不知道地面上的情况如何，也不知道是否还有其他幸存者——但你必须活下去。<br>
+    无线电中断的那天，你听到了最后的救援消息：“@@color: yellow;''保持信号，救援将在20天后抵达。''@@”<br>
+    这20天或许将是你生命中最漫长的20天。
+  </div>
+  <div class="story-card-footer">
+    [[开始|地堡]]
+  </div>
+</div>
+
+:: 地堡
+<<do>>
+  <div class="cards">
+    <<if $action > 0>>    
+      <div class="card">
+        <div class="card-title">
+          <span>地堡</span>
+          <span>
+            <<link "?">>
+              <<run Dialog.create().wiki(`
+                选择可执行的行动。<br>
+                ''搜寻''：获得食物或水<br>
+                ''深渊''：获得更多食物或水，恢复精神，但风险较高<br>
+                ''休息''：恢复健康或精神<br>
+                ''修理''：修理设备，恢复电力<br>
+                ''制作''：消耗食物或水和电力，获得提高搜寻效率的工具（一次性使用）<br>
+                ''强化''：获得永久效果<br>
+                <br>
+                ''极限求生''<br>
+                在孤独和恐惧中，你爆发出最后的力量。<br>
+                在当前回合，玩家可以执行两次行动，可随时使用。<br>
+                但每局游戏只能使用一次，且使用后该局游戏结局判定降一星。<br>
+                如已为胜利或失败的最低星，则结局判定维持不变。
+              `).open()>>
+            <</link>>
+          </span>
+        </div>
+        <div class="card-content">
+          <div class="message">
+            <<button "搜寻">>
+              <<include "行动开关">>
+              <<set $flag.search = true>>
+              <<redo>>
+            <</button>>
+            <<button "深渊">>
+              <<include "行动开关">>
+              <<set $flag.abys = true>>
+              <<redo>>
+            <</button>><br>
+            <<button "休息">>
+              <<include "行动开关">>
+              <<set $flag.rest = true>>
+              <<redo>>
+            <</button>><br>
+            <<button "制作">>
+              <<include "行动开关">>
+              <<set $flag.make = true>>
+              <<redo>>
+            <</button>><br>
+            <<button "修理">>
+              <<include "行动开关">>
+              <<set $flag.repair = true>>
+              <<redo>>
+            <</button>>
+            <<button "强化">>
+              <<include "行动开关">>
+              <<set $flag.upgrade = true>>
+              <<redo>>
+            <</button>><br>
+            <<if !$useSkill>>
+              <<button "极限求生" "地堡">>
+                <<set $action += 1>>
+                <<set $useSkill = true>>
+              <</button>>
+            <</if>>
+          </div>
+        </div>
+      </div>
+    <</if>>
+    <<if $flag.search && !$flag.dailyEvent>>
+      <<include "搜寻资源">>
+    <</if>>
+    <<if $flag.abys && !$flag.dailyEvent>>
+      <<include "深渊探索">>
+    <</if>>
+    <<if $flag.rest && !$flag.dailyEvent>>
+      <<include "休息">>
+    <</if>>
+    <<if $flag.repair && !$flag.dailyEvent>>
+      <<include "修理">>
+    <</if>>
+    <<if $flag.make && !$flag.dailyEvent>>
+      <<include "制作">>
+    <</if>>
+    <<if $flag.upgrade && !$flag.dailyEvent>>
+      <<include "强化">>
+    <</if>>
+    <<if $flag.dailyEvent>>
+      <<include "事件">>
+    <</if>>
+  </div>
+<</do>>
+
+:: 行动开关
+<<for _key range Object.keys($flag)>>
+  <<if $flag[_key]>>
+    <<set $flag[_key] = false>>
+  <</if>>
+<</for>>
+
+:: 休息
+<div class="card">
+  <div class="card-title">
+    <span>休息</span>
+    <span><<link ?>>
+      <<run Dialog.create().wiki(`
+        ''休息''<br>
+        休息一天，恢复自身的状态，避免健康值或精神值过低导致崩溃。<br>
+        效果：选择其一<br>
+        健康值 +1（治疗小伤口、恢复体力）。<br>
+        精神值 +1（通过放松、冥想恢复心理状态）。<br>
+        <br>
+      `).open()>>
+    <</link>></span>
+  </div>
+  <div class="card-content">
+    <div class="message">
+      <<= $restMes.slice().reverse().join("<br>")>>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<if $action > 0>>
+      <<button "健康" "地堡">>
+        <<set $hp += 1>>
+        <<set $action -= 1>>
+        <<set $restMes.push(`@@color: orange;第 ''${$day}'' 天@@`)>>
+        <<set $restMes.push(`虽然睡得不踏实，但经过一番休息，你感觉舒服很多。`)>>
+        <<set $restMes.push(`@@color: yellow;''健康 +1''@@`)>>
+      <</button>>
+      <<button "精神" "地堡">>
+        <<set $san += 1>>
+        <<set $action -= 1>>
+        <<set $restMes.push(`@@color: orange;第 ''${$day}'' 天@@`)>>
+        <<set $restMes.push(`你努力入睡，让自己放松下来。修整一番，你的精神好了很多。`)>>
+        <<set $restMes.push(`@@color: yellow;''精神 +1''@@`)>>
+      <</button>>
+    <<else>>
+      <<button "每日事件" "地堡">>
+        <<set $flag.dailyEvent = true>>
+      <</button>>
+    <</if>>
+  </div>
+</div>
+
+:: 搜寻资源
+<div class="card">
+  <div class="card-title">
+    <span>搜寻资源</span>
+    <span><<link ?>>
+      <<run Dialog.create().wiki(`
+        选择探索地堡寻找更多资源。<br>
+        掷骰子结果：<br>
+        1~2：找到 2单位资源（食物或水），但受到伤害，健康值 -1。<br>
+        3~4：找到 3单位资源。<br>
+        5~6：找到 4单位资源。
+      `).open()>>
+    <</link>></span>
+  </div>
+  <div class="card-content">
+    <div class="message">
+      <<= $searchMes.slice().reverse().join("<br>")>>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<if $action > 0>>
+      <<button "搜寻" "地堡">>
+        <<set _dice = random(1, 6)>>
+        <<set _resDice = random(1, 2)>>
+        <<set $action -= 1>>
+        <<if $useToolBag>>
+          <<set _resToolBag = 1>>
+        <<else>>
+          <<set _resToolBag = 0>>
+        <</if>>
+        <<if $resTool>>
+          <<set _resResTool = 2>>
+        <<else>>
+          <<set _resResTool = 0>>
+        <</if>>
+        <<set $searchMes.push(`@@color: orange;第 ''${$day}'' 天@@`)>>
+        <<set $searchMes.push(`投掷1D6结果：${_dice}`)>>
+        <<if _dice <= 2>>
+          <<if _resDice === 1>>
+            <<set $searchMes.push(`@@color: yellow;食物 +2@@`)>>
+            <<if $useToolBag>>
+              <<set $searchMes.push(`使用【工具包】，@@color: yellow;食物 +1@@`)>>
+              <<set $useToolBag = false>>
+            <</if>>
+            <<if $resTool>>
+              <<set $searchMes.push(`【储物空间空充】 @@color: yellow;食物 +2@@`)>>
+            <</if>>
+            <<set $food += 2 + _resToolBag + _resResTool>>
+          <<else>>
+            <<set $searchMes.push(`@@color: yellow;水 +2@@`)>>
+            <<if $useToolBag>>
+              <<set $searchMes.push(`使用【工具包】，@@color: yellow;水 +1@@`)>>
+              <<set $useToolBag = false>>
+            <</if>>
+            <<if $resTool>>
+              <<set $searchMes.push(`【储物空间空充】 @@color: yellow;水 +2@@`)>>
+            <</if>>
+            <<set $water += 2 + _resToolBag + _resResTool>>
+          <</if>>
+          <<set $searchMes.push(`@@color: red;健康 -1@@`)>>
+          <<set $hp -= 1>>
+          <<include "游戏结束条件">>
+        <<elseif _dice <= 4>>
+          <<if _resDice === 1>>
+            <<set $searchMes.push(`@@color: yellow;食物 +3@@`)>>
+            <<if $useToolBag>>
+              <<set $searchMes.push(`使用【工具包】，@@color: yellow;食物 +1@@`)>>
+              <<set $useToolBag = false>>
+            <</if>>
+            <<if $resTool>>
+              <<set $searchMes.push(`【储物空间空充】 @@color: yellow;食物 +2@@`)>>
+            <</if>>
+            <<set $food += 3 + _resToolBag + _resResTool>>
+          <<else>>
+            <<set $searchMes.push(`@@color: yellow;水 +3@@`)>>
+            <<if $useToolBag>>
+              <<set $searchMes.push(`使用【工具包】，@@color: yellow;水 +1@@`)>>
+              <<set $useToolBag = false>>
+            <</if>>
+            <<if $resTool>>
+              <<set $searchMes.push(`【储物空间空充】 @@color: yellow;水 +2@@`)>>
+            <</if>>
+            <<set $water += 3 + _resToolBag + _resResTool>>
+          <</if>>
+        <<else>>
+          <<if _resDice === 1>>
+            <<set $searchMes.push(`@@color: yellow;食物 +4@@`)>>
+            <<if $useToolBag>>
+              <<set $searchMes.push(`使用【工具包】，@@color: yellow;食物 +1@@`)>>
+              <<set $useToolBag = false>>
+            <</if>>
+            <<if $resTool>>
+              <<set $searchMes.push(`【储物空间空充】 @@color: yellow;食物 +2@@`)>>
+            <</if>>
+            <<set $food += 4 + _resToolBag + _resResTool>>
+          <<else>>
+            <<set $searchMes.push(`@@color: yellow;水 +4@@`)>>
+            <<if $useToolBag>>
+              <<set $searchMes.push(`使用【工具包】，@@color: yellow;水 +1@@`)>>
+              <<set $useToolBag = false>>
+            <</if>>
+            <<if $resTool>>
+              <<set $searchMes.push(`【储物空间空充】 @@color: yellow;水 +2@@`)>>
+            <</if>>
+            <<set $water += 4 + _resToolBag + _resResTool>>
+          <</if>>
+        <</if>>
+      <</button>>
+    <<else>>
+      <<button "每日事件" "地堡">>
+        <<set $flag.dailyEvent = true>>
+      <</button>>
+    <</if>>
+  </div>
+</div>
+
+:: 深渊探索
+<div class="card">
+  <div class="card-title">
+    <span>深渊探索</span>
+    <span><<link ?>>
+      <<run Dialog.create().wiki(`
+        在地堡的最底层有一个深不见底的大洞，并伴有人工挖掘的痕迹。<br>
+        选择进行一次更远距离的冒险探索，可能获得更多资源，但风险更高。<br>
+        掷骰子结果：<br>
+        1-4：遭受意外重伤，健康值 -3。<br>
+        5：找到 4单位资源，精神值 +1。<br>
+        6：找到 5单位资源，精神值 +2。<br>
+      `).open()>>
+    <</link>></span>
+  </div>
+  <div class="card-content">
+    <div class="message">
+      <<= $abysMes.slice().reverse().join("<br>")>>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<if $useToolBag>>
+      <<set _resToolBag = 1>>
+    <<else>>
+      <<set _resToolBag = 0>>
+    <</if>>
+    <<if $resTool>>
+      <<set _resResTool = 2>>
+    <<else>>
+      <<set _resResTool = 0>>
+    <</if>>
+    <<if $action > 0>>
+      <<button "探索" "地堡">>
+        <<set _dice = random(1, 6)>>
+        <<set _resDice = random(1, 2)>>
+        <<set $action -= 1>>
+        <<set $abysMes.push(`@@color: orange;第 ''${$day}'' 天@@`)>>
+        <<set $abysMes.push(`投掷1D6结果：${_dice}`)>>
+        <<if _dice <= 4>>
+          <<set $abysMes.push(`遭受意外重伤，@@color: red;健康 -3@@`)>>
+          <<set $hp -= 3>>
+          <<include "游戏结束条件">>
+        <<elseif _dice == 5>>
+          <<switch _resDice>>
+            <<case 1>>
+              <<set $abysMes.push(`@@color: yellow;食物 +4@@`)>>
+              <<if $useToolBag>>
+                <<set $abysMes.push(`使用【工具包】，@@color: yellow;食物 +1@@`)>>
+                <<set $useToolBag = false>>
+              <</if>>
+              <<if $resTool>>
+                <<set $abysMes.push(`【储物空间空充】 @@color: yellow;食物 +2@@`)>>
+              <</if>>
+              <<set $food += 4 + _resToolBag + _resResTool>>
+            <<case 2>>
+              <<set $abysMes.push(`@@color: yellow;水 +4@@`)>>
+              <<if $useToolBag>>
+                <<set $abysMes.push(`使用【工具包】，@@color: yellow;食物 +1@@`)>>
+                <<set $useToolBag = false>>
+              <</if>>
+              <<if $resTool>>
+                <<set $abysMes.push(`【储物空间空充】 @@color: yellow;食物 +2@@`)>>
+              <</if>>
+              <<set $water += 4 + _resToolBag + _resResTool>>
+          <</switch>>
+          <<set $abysMes.push(`@@color: yellow;精神 +1@@`)>>
+          <<set $san += 1>>
+        <<else>>
+          <<switch _resDice>>
+            <<case 1>>
+              <<set $abysMes.push(`@@color: yellow;食物 +5@@`)>>
+              <<if $useToolBag>>
+                <<set $abysMes.push(`使用【工具包】，@@color: yellow;食物 +1@@`)>>
+                <<set $useToolBag = false>>
+              <</if>>
+              <<if $resTool>>
+                <<set $abysMes.push(`【储物空间空充】 @@color: yellow;食物 +2@@`)>>
+              <</if>>
+                <<set $food += 5 + _resToolBag + _resResTool>>
+            <<case 2>>
+              <<set $abysMes.push(`@@color: yellow;水 +5@@`)>>
+              <<if $useToolBag>>
+                <<set $abysMes.push(`使用【工具包】，@@color: yellow;食物 +1@@`)>>
+                <<set $useToolBag = false>>
+              <</if>>
+              <<if $resTool>>
+                <<set $abysMes.push(`【储物空间空充】 @@color: yellow;食物 +2@@`)>>
+              <</if>>
+              <<set $water += 5 + _resToolBag + _resResTool>>
+          <</switch>>
+          <<set $abysMes.push(`@@color: yellow;精神 +2@@`)>>
+          <<set $san += 2>>
+        <</if>>
+      <</button>>
+    <<else>>
+      <<button "每日事件" "地堡">>
+        <<set $flag.dailyEvent = true>>
+      <</button>>
+    <</if>>
+  </div>
+</div>
+
+:: 修理
+<div class="card">
+  <div class="card-title">
+    <span>修理设备</span>
+    <span><<link ?>>
+      <<run Dialog.create().wiki(`
+        选择修理地堡内的设备，以防止设备损坏恶化。<br>
+        掷骰子结果：<br>
+        1~2：重新启动，恢复1单位电力。<br>
+        2~4：清理积灰，恢复 3单位电力。<br>
+        5~6：修复短路，恢复 4单位电力。
+      `).open()>>
+    <</link>></span>
+  </div>
+  <div class="card-content">
+    <div class="message">
+      <<= $repairMes.slice().reverse().join("<br>")>>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<if $action > 0>>
+      <<button "修理" "地堡">>
+        <<set $repairMes.push(`@@color: orange;第 ''${$day}'' 天@@`)>>
+        <<set _dice = random(1, 6)>>
+        <<set $action -= 1>>
+        <<set $repairMes.push(`投掷1D6结果：${_dice}`)>>
+        <<if _dice <= 2>>
+          <<set $repairMes.push(`重新启动，@@color: yellow;电力 +1@@`)>>
+          <<set $electric += 1>>
+        <<elseif _dice <= 4>>
+          <<set $repairMes.push(`清理积灰，@@color: yellow;电力 +3@@`)>>
+          <<set $electric += 3>>
+        <<else>>
+          <<set $repairMes.push(`恢复短路，@@color: yellow;电力 +4@@`)>>
+          <<set $electric += 4>>
+        <</if>>
+      <</button>>
+    <<else>>
+      <<button "每日事件" "地堡">>
+        <<set $flag.dailyEvent = true>>
+      <</button>>
+    <</if>>
+  </div>
+</div>
+
+:: 制作
+<div class="card">
+  <div class="card-title">
+    <span>制作工具</span>
+    <span><<link ?>>
+      <<run Dialog.create().wiki(`
+        用现有资源制作一些工具或物品，帮助提高未来的生存效率。<br>
+        消耗1单位电力和1单位资源（食物或水），制作以下工具（任选一项）：<br>
+        工具包：下次搜寻资源时额外获得3单位资源。<br>
+        简易医疗包：恢复健康值+2。<br>
+        简单娱乐物品：恢复精神值+2。
+      `).open()>>
+    <</link>></span>
+  </div>
+  <div class="card-content">
+    <div class="message">
+      <<= $makeMes.slice().reverse().join("<br>")>>
+    </div>
+  </div>
+  <div class="card-footer make">
+    <<if $action > 0>>
+      <div class="useItem">
+        <<if $toolBag>>
+          <<link "..." "地堡">>
+            <<set $useToolBag = true>>
+            <<set $toolBag = false>>
+          <</link>>
+        <<else>>
+          <<link "">><</link>>
+        <</if>>
+        <<listbox "_res">>
+          <<option "食物">>
+          <<option "水">>
+        <</listbox>> 
+        <<button "工具包" "地堡">>
+          <<if !$toolBag>>
+            <<set $action -= 1>>
+            <<if _res == "食物">>
+              <<set $food -= 1>>
+            <<elseif _res == "水">>
+              <<set $water -= 1>>
+            <</if>>
+            <<set $electric -= 1>>
+            <<set $toolBag = true>>
+            <<set $makeMes.push(`@@color: orange;第 ''${$day}'' 天@@`)>>
+            <<set $makeMes.push(`制作【''工具包''】`)>>
+          <</if>>
+        <</button>>
+      </div>
+      <div class="useItem">
+        <<if $hpBag>>
+          <<link "..." "地堡">>
+            <<set $hp += 2>>
+            <<set $hpBag = false>>
+          <</link>>
+        <<else>>
+          <<link "">><</link>>
+        <</if>>
+        <<listbox "_res">>
+          <<option "食物">>
+          <<option "水">>
+        <</listbox>> 
+        <<button "简易医疗包" "地堡">>
+          <<if !$hpBag>>
+            <<if _res == "食物">>
+              <<set $food -= 1>>
+            <<elseif _res == "水">>
+              <<set $water -= 1>>
+            <</if>>
+            <<set $electric -= 1>>
+            <<set $hpBag = true>>
+          <</if>>
+        <</button>>
+      </div>
+      <div class="useItem">
+        <<if $sanTool>>
+          <<link "..." "地堡">>
+            <<set $san += 2>>
+            <<set $sanTool = false>>
+          <</link>>
+        <<else>>
+          <<link "">><</link>>
+        <</if>>
+        <<listbox "_res">>
+          <<option "食物">>
+          <<option "水">>
+        <</listbox>> 
+        <<button "简单娱乐用品" "地堡">>
+          <<if !$sanTool>>
+            <<if _res == "食物">>
+              <<set $food -= 1>>
+            <<elseif _res == "水">>
+              <<set $water -= 1>>
+            <</if>>
+            <<set $electric -= 1>>
+            <<set $sanTool = true>>
+          <</if>>
+        <</button>>
+      </div>
+    <<else>>
+      <<button "每日事件" "地堡">>
+        <<set $flag.dailyEvent = true>>
+      <</button>>
+    <</if>>
+  </div>
+</div>
+
+:: 强化
+<div class="card">
+  <div class="card-title">
+    <span>强化地堡</span>
+    <span><<link ?>>
+      <<run Dialog.create().wiki(`
+        选择用资源对地堡进行强化，提升未来的生存能力。<br>
+        每个升级仅限1次。<br>
+        消耗2单位电力和2单位资源（食物或水），选择以下强化之一：<br>
+        发电机强化：每日不再消耗电力。<br>
+        储物空间扩充：未来每次搜寻资源可额外获得2单位资源。<br>
+        隔音墙改造：未来每次休息，健康值或精神值额外+1。
+      `).open()>>
+    <</link>></span>
+  </div>
+  <div class="card-content">
+    <div class="message">
+      <<= $upgradeMes.slice().reverse().join("<br>")>>
+    </div>
+  </div>
+  <div class="card-footer make">
+    <<if $action > 0>>
+      <div class="useItem">
+        <<if $eleTool>>
+          <<link "★">><</link>>
+        <<else>>
+          <<link "">><</link>>
+        <</if>>
+        <<listbox "_res">>
+          <<option "食物">>
+          <<option "水">>
+        <</listbox>> 
+        <<button "发电机强化" "地堡">>
+          <<if !$eleTool>>
+            <<set $action -= 1>>
+            <<if _res == "食物">>
+              <<set $food -= 1>>
+            <<elseif _res == "水">>
+              <<set $water -= 1>>
+            <</if>>
+            <<set $electric -= 1>>
+            <<set $eleTool = true>>
+            <<set $upgradeMes.push(`@@color: orange;第 ''${$day}'' 天@@`)>>
+            <<set $upgradeMes.push(`完成【''发电机强化''】`)>>
+          <</if>>
+        <</button>>
+      </div>
+      <div class="useItem">
+        <<if $hpBag>>
+          <<link "★">><</link>>
+        <<else>>
+          <<link "">><</link>>
+        <</if>>
+        <<listbox "_res">>
+          <<option "食物">>
+          <<option "水">>
+        <</listbox>> 
+        <<button "储物空间扩充" "地堡">>
+          <<if !$resTool>>
+            <<if _res == "食物">>
+              <<set $food -= 1>>
+            <<elseif _res == "水">>
+              <<set $water -= 1>>
+            <</if>>
+            <<set $electric -= 1>>
+            <<set $resTool = true>>
+            <<set $upgradeMes.push(`@@color: orange;第 ''${$day}'' 天@@`)>>
+            <<set $upgradeMes.push(`完成【''储物空间扩充''】`)>>
+          <</if>>
+        <</button>>
+      </div>
+      <div class="useItem">
+        <<if $sanTool>>
+          <<link "★">><</link>>
+        <<else>>
+          <<link "">><</link>>
+        <</if>>
+        <<listbox "_res">>
+          <<option "食物">>
+          <<option "水">>
+        <</listbox>> 
+        <<button "隔音墙改造" "地堡">>
+          <<if !$restTool>>
+            <<if _res == "食物">>
+              <<set $food -= 1>>
+            <<elseif _res == "水">>
+              <<set $water -= 1>>
+            <</if>>
+            <<set $electric -= 1>>
+            <<set $restTool = true>>
+            <<set $upgradeMes.push(`@@color: orange;第 ''${$day}'' 天@@`)>>
+            <<set $upgradeMes.push(`完成【''隔音墙改造''】`)>>
+          <</if>>
+        <</button>>
+      </div>
+    <<else>>
+      <<button "每日事件" "地堡">>
+        <<set $flag.dailyEvent = true>>
+      <</button>>
+    <</if>>
+  </div>
+</div>
+
+:: 事件
+/* <div class="cards"> */
+<div class="card event">
+  <div class="card-title">事件</div>
+    <div class="card-content">
+      <<do tag "事件">>
+        <div class="message">
+          <<= $eventMes.slice().reverse().join("<br>")>>
+        </div>
+      <</do>>
+    </div>
+    <div class="card-footer">
+    <<do tag "事件">>
+      <<if _btn == "下一天">>
+        <<button "新的一天" "地堡">>
+          <<include "下一天">>
+        <</button>>
+      <<else>>
+        <<button "查看">>
+          <<set $eventMes.push(`@@color: orange;第 ''${$day}'' 天@@`)>>
+          <<set _eve = $events.random()>>
+          <<set $eventMes.push(`${_eve.content}`)>>
+          <<if _eve.effect == "">>
+            <<set $eventMes.push(`没有事情发生`)>>
+          <<elseif _eve.effect == "something">>
+            <<set _res = ["food", "water", "electric"].random()>>
+            <<switch _res>>
+              <<case "food">>
+                <<set $eventMes.push(`@@color: yellow;食物 +${_eve.effect_value}@@`)>>
+                <<set $food += _eve.effect_value>>
+              <<case "water">>
+                <<set $eventMes.push(`@@color: yellow;水 +${_eve.effect_value}@@`)>>
+                <<set $water += _eve.effect_value>>
+              <<case "electric">>
+                <<set $eventMes.push(`@@color: yellow;电力 +${_eve.effect_value}@@`)>>
+                <<set $electric += _eve.effect_value>>
+            <</switch>>
+            <<redo "资源">>
+          <<else>>
+            <<switch _eve.effect[0]>>
+              <<case "food">>
+                <<set _res0 = "食物">>
+              <<case "water">>
+                <<set _res0 = "水">>
+              <<case "electric">>
+                <<set _res0 = "电力">>
+              <<case "hp">>
+                <<set _res0 = "健康">>
+              <<case "san">>
+                <<set _res0 = "精神">>
+            <</switch>>
+            <<switch _eve.effect[1]>>
+              <<case "food">>
+                <<set _res1 = "食物">>
+              <<case "water">>
+                <<set _res1 = "水">>
+              <<case "electric">>
+                <<set _res1 = "电力">>
+              <<case "hp">>
+                <<set _res1 = "健康">>
+              <<case "san">>
+                <<set _res1 = "精神">>
+            <</switch>>
+            <<if _eve.effect.length > 1>>
+              <<if _eve.effect_value[0] > 0>>
+                <<set $eventMes.push(`@@color: yellow;${_res0} +${_eve.effect_value[0]}，${_res1} +${_eve.effect_value[1]}@@`)>>
+              <<else>>
+                <<set $eventMes.push(`@@color: red;${_res0} ${_eve.effect_value[0]}，${_res1} ${_eve.effect_value[1]}@@`)>>
+              <</if>>
+              <<switch _res0>>
+                <<case "食物">>
+                  <<set $food += _eve.effect_value[0]>>
+                <<case "水">>
+                  <<set $water += _eve.effect_value[0]>>
+                <<case "电力">>
+                  <<set $electric += _eve.effect_value[0]>>
+                <<case "健康">>
+                  <<set $hp += _eve.effect_value[0]>>
+                <<case "精神">>
+                  <<set $san += _eve.effect_value[0]>>
+              <</switch>>
+              <<switch _res1>>
+                <<case "食物">>
+                  <<set $food += _eve.effect_value[1]>>
+                <<case "水">>
+                  <<set $water += _eve.effect_value[1]>>
+                <<case "电力">>
+                  <<set $electric += _eve.effect_value[1]>>
+                <<case "健康">>
+                  <<set $hp += _eve.effect_value[1]>>
+                <<case "精神">>
+                  <<set $san += _eve.effect_value[1]>>
+              <</switch>>
+            <<else>>
+              <<if _eve.effect_value[0] > 0>>
+                <<set $eventMes.push(`@@color: yellow;${_res0} +${_eve.effect_value[0]}@@`)>>
+              <<else>>
+                <<set $eventMes.push(`@@color: red;${_res0} ${_eve.effect_value[0]}@@`)>>
+              <</if>>
+              <<switch _res0>>
+                <<case "食物">>
+                  <<set $food += _eve.effect_value[0]>>
+                <<case "水">>
+                  <<set $water += _eve.effect_value[0]>>
+                <<case "电力">>
+                  <<set $electric += _eve.effect_value[0]>>
+                <<case "健康">>
+                  <<set $hp += _eve.effect_value[0]>>
+                <<case "精神">>
+                  <<set $san += _eve.effect_value[0]>>
+              <</switch>>
+            <</if>>
+            <<redo "属性" "资源">>
+          <</if>>
+          <<set _btn = "下一天">>
+          <<redo "事件">>
+        <</button>>
+      <</if>>
+      <</do>>
+    </div>
+</div>
+/* </div> */
+
+:: 结束
+<<if $hp >= 4 && $san >= 4>>
+  <<set $endStart = 7>>
+  <<if $useSkill>>
+    <<set $endStart -= 1>>
+  <</if>>
+  <<set $endTitle = "希望的火种">>
+<</if>>
+<<if $hp >= 4 && $san <= 3>>
+  <<set $endStart = 6>>
+  <<if $useSkill>>
+    <<set $endStart -= 1>>
+  <</if>>
+  <<set $endTitle = "空洞的胜利">>
+<</if>>
+<<if $hp <= 3 && $san >= 4>>
+  <<set $endStart = 5>>
+  <<if $useSkill>>
+    <<set $endStart -= 1>>
+  <</if>>
+  <<set $endTitle = "残存的希望">>
+<</if>>
+<<if $hp <= 4 && $san <= 3>>
+  <<set $endStart = 4>>
+  <<set $endTitle = "苟活的遗民">>
+<</if>>
+<<if $hp <= 0 && $san > 0>>
+  <<set $endStart = 3>>
+  <<if $useSkill>>
+    <<set $endStart -= 1>>
+  <</if>>
+  <<set $endTitle = "耗尽的生命">>
+<</if>>
+<<if $san <= 0 && $hp > 0>>
+  <<set $endStart = 2>>
+  <<if $useSkill>>
+    <<set $endStart -= 1>>
+  <</if>>
+  <<set $endTitle = "坠入深渊">>
+<</if>>
+<<if $hp <= 0 && $san <= 0>>
+  <<set $endStart = 1>>
+  <<set $endTitle = "孤独的遗迹">>
+<</if>>
+<div class="cards">
+  <div class="story-card">
+    <div class="story-card-title" style="color: #5ed164; letter-spacing: 1px;">$endTitle</div>
+    <div class="story-card-content">
+      <<if $endStart === 7>>
+        <span style="font-size: 22px; color: gol; font-weight: 700d">★★★★★★★</span><br>
+        你不仅成功坚持到了救援的到来，还始终保持着乐观和坚韧。<br>
+        救援队发现你时，他们为你的冷静和坚强感到震惊。<br>
+        你不仅活了下来，还在孤独与困境中为自己创造了某种秩序——地堡中的整洁物资、记录详细的生存日记、修复完好的设备都证明了这一点。<br>
+        救援队将你视为人类精神的象征，你的故事被传播开来，成为时代的传奇。<br>
+        那些与你一起被救出的人也受到了你的感染，在重新建立文明的过程中，你成为了希望的火种。       
+      <</if>>
+      <<if $endStart === 6>>
+        <span style="font-size: 22px; color: gol; font-weight: 700d">★★★★★★</span><br>
+        你挺了过来，但代价是巨大的。<br>
+        救援队到来时，你的身体状况不错，但你的目光空洞、言语无力。一切的恐惧、孤独和压力早已吞噬了你的精神。<br>
+        你甚至无法完全相信救援是真实的，你的世界仍被黑暗笼罩。<br>
+        尽管如此，你仍然被带出了地堡。<br>
+        救援队努力照顾你，但他们发现，无论是再多的食物、阳光还是陪伴，都无法在短时间内填补你心中的空虚。<br>
+        你活了下来，但你失去了希望。
+      <</if>>
+      <<if $endStart === 5>>
+        <span style="font-size: 22px; color: gol; font-weight: 700d">★★★★★</span><br>
+        救援队找到你时，你几乎无法站立，身体瘦弱得如同一片枯叶。<br>
+        你的健康严重受损，但你的眼神依然炽热，心中仍然燃烧着生存的渴望。<br>
+        你用尽最后的力气向他们挥手，告诉他们你还活着。<br>
+        他们迅速将你送上担架，你几乎昏迷过去，但你的嘴角挂着一丝微笑。<br>
+        你知道，你的努力没有白费，你终于熬过了这场漫长的噩梦。
+      <</if>>
+      <<if $endStart === 4>>
+        <span style="font-size: 22px; color: gol; font-weight: 700d">★★★★</span><br>
+        救援队找到你时，你倒在地上，几乎没有知觉。<br>
+        你的身体状况已经濒临崩溃，而你的精神早已被孤独和绝望撕裂。<br>
+        你不知道自己是如何熬过来的，也不知道自己是否真的想要继续活下去。<br>
+        救援队将你抬上担架，你的意识模糊，眼前的光亮让你感到陌生。<br>
+        你没有力气说话，也没有力气感到喜悦。
+      <</if>>
+      <<if $endStart === 3>>
+        <span style="font-size: 22px; color: red; font-weight: 700">★★★</span><br>
+        你的身体再也无法支撑下去了。<br>
+        饥饿、脱水与伤病最终将你拖入深渊。<br>
+        你躺在冷冷的地板上，感受着生命的流逝。无论你多么努力，无论你多么渴望救援，都无法抵挡死亡的降临。<br>
+        就在你闭上双眼的那一刻，无线电中传来了一阵模糊的声音。<br>
+        救援队正在靠近，但他们来得太晚了。
+      <</if>>
+      <<if $endStart === 2>>
+        <span style="font-size: 22px; color: red; font-weight: 700">★★</span><br>
+        孤独、绝望与恐惧将你彻底吞噬。<br>
+        你开始听到幻觉中的声音，看到不存在的人影。<br>
+        你无法分辨现实与幻想，最终选择放弃了挣扎。<br>
+        某一天，你将地堡的大门打开，走入了外面的废土。<br>
+        你以为那里会有答案，但迎接你的只有寒冷的灰烬。<br>
+        救援队到来时，地堡里只剩下空荡荡的房间。
+      <</if>>
+      <<if $endStart === 1>>
+        <span style="font-size: 22px; color: red; font-weight: 700">★</span><br>
+        你的身体和精神都已经走到了崩溃的边缘。<br>
+        某一天，设备彻底停止运转，地堡陷入了死寂。<br>
+        你试图振作，但一切都无济于事。<br>
+        你留下一封日记，记录下你最后的想法：“我尝试了一切，但我输了。”<br>
+        救援队在几天后到达时，他们发现了你的尸体。<br>
+        地堡里的物资耗尽，设备老化，而你的日记成为了唯一的幸存者。
+      <</if>>
+    </div>
+  </div>
+</div>
+
+:: 游戏结束条件
+<<if $hp <= 0 || $san <= 0 || $day > 20>>
+  <<goto "结束">>
+<</if>>
+
+:: 下一天
+<<set $day += 1>>
+<<set $food -= 1, $water -= 1>>
+<<if !$eleTool>>
+  <<set $electric -= 1>>
+<</if>>
+<<include "行动开关">>
+<<set $action += 1>>
+<<if $food <= 0>>
+  <<set $zeroFood -= 1>>
+<<else>>
+  <<set $zeroFood = 2>>
+<</if>>
+<<if $water <= 0>>
+  <<set $zeroWater -= 1>>
+<<else>>
+  <<set $zeroWater = 2>>
+<</if>>
+<<if $electric <= 0>>
+  <<set $zeroElectric -= 1>>
+<<else>>
+  <<set $zeroElectric = 2>>  
+<</if>>
+<<if $zeroFood <= 0 || $zeroWater <= 0>>
+  <<set $hp -= 1>>
+<</if>>
+<<if $zeroElectric <= 0>>
+  <<set $san -= 1>>
+<</if>>
+<<include "游戏结束条件">>

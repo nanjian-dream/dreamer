@@ -1,0 +1,1947 @@
+:: StoryData
+{
+  "ifid": "32E1E56B-9F26-4388-8380-68ACB7F69DED",
+  "format": "SugarCube",
+  "format-version": "2.37.2"
+}
+
+:: StoryAuthor
+<div style="text-align: right; font-size: 14px">//作者：南间梦//</div><hr>
+
+:: StoryTitle
+简单简单的冒险Ⅰ
+
+:: StoryInit
+<<set $hp = 8>>
+<<set $turns = 1>>
+
+/* 战斗力 */
+<<set $fight = 0>>
+
+<<set $food = 0>>
+<<set $resource = 0>>
+<<set $tool = 0>>
+
+<<set $light = true>>
+
+<<set $map = ["快餐店", "快餐店", "快餐店",
+"杂货店", "杂货店", "杂货店",
+"保安亭", "保安亭", "保安亭",
+"安全屋Ⅰ", "安全屋Ⅰ",
+"庇护所Ⅰ", "庇护所Ⅰ",
+"连锁超市Ⅰ", "购物中心Ⅰ",
+"仓库Ⅰ"]>>
+
+<<set $cloneMap = clone($map)>>
+
+/* 洗牌 随机打乱数组 */
+<<set $nowMap = clone($cloneMap).randomMany($cloneMap.length)>>
+
+<<set $currentLocation = $nowMap[0]>>
+<<set $netLocation = $nowMap[1]>>
+
+<<set $scores = 0>>
+
+<<set $nowTime = new Date()>>
+
+
+:: StoryCaption
+<<do>>
+<div class="side-bar-link">
+  <<if $light>>
+    <div class="gold" style="background: white; color: black">
+      <div class="toolTip">
+        $turns
+        <span class="toolTipText">
+          第$turns周
+        </span>
+      </div>
+    </div>
+  <<else>>
+    <div class="gold" style="background: blue; color: white">
+      <div class="toolTip">
+        $turns
+        <span class="toolTipText">
+          第$turns周
+        </span>
+      </div>
+    </div>
+  <</if>>
+</div>
+<div class="side-bar-link">
+  <div class="gold" style="background: red; color: black">
+    <div class="toolTip">
+      $hp
+      <span class="toolTipText">
+        生命值
+      </span>
+    </div>
+  </div>
+  <div class="gold" style="background: yellow; color: black">
+    <div class="toolTip">
+      $fight
+      <span class="toolTipText">
+        战斗力
+      </span>
+    </div>
+  </div>
+</div>
+
+<div class="side-bar-link">
+  <<link 食物：$food>>
+  <</link>>
+  <<link 资源：$resource>>
+    <<if !$light>>
+      <<if $resource >= 1>>
+        <<set $light = true>>
+        <<set $resource -= 1>>
+        <<redo>>
+      <<else>>
+        <<if $turns >= 5>>
+          <<run UI.alert("资源不够")>>
+        <</if>>
+      <</if>>
+    <<else>>
+      <<run UI.alert("当前处于光明状态！")>>
+    <</if>>
+  <</link>>
+  <<link 工具：$tool>>
+  <</link>>
+</div>
+
+<div class="side-bar-link">
+  <<link 本周未搜索：$nowMap.length>>
+  <</link>>
+</div>
+
+<div class="side-bar-link">
+  <<link 积分：$scores>>
+    <<run Dialog.create("积分").wikiPassage("积分").open()>>
+  <</link>>
+</div>
+<</do>>
+
+:: 积分
+<<run load("showScores")>>
+
+:: Start
+<div class="start" style="text-align: center; padding-top: 0.5rem">
+<h2 style="letter-spacing: 1.5px">@@color: orange;游戏说明@@</h2><hr>
+欢迎游玩''简单简单的冒险Ⅰ''！。<br>
+本作根据B站@@''UP主@丶辛晨''@@的视频<<僵尸毁灭工程>>制作而成。<br>
+原本游戏为<<棕榈岛>>+<<僵尸毁灭工程>>。<br>
+<br>
+游戏有@@16@@个地点可以探索。<br>
+前四周每次可以发现@@2@@个地点，对其中一个进行探索。<br>
+@@从第五周开始，每次只能发现1个地点。需要耗费1资源，才能保证该周每次发现2个地点。@@<br>
+<br>
+@@color:yellow;''游戏目标：''@@保证生命值不归零的前提下，完成@@8@@个周的生存。<br>
+每周结束，需要达成战力条件，如果未达成，扣除@@<<战力条件 - 当前战力>>@@点生命值。<br>
+某些探索、升级、改造、搜索需要一定条件才能进行。<br>
+探索后能发现新的搜索点，获得新的资源。<br>
+同一种建筑不同改造方案，能够获取不同的资源。<br>
+@@生命值归零，或成功生存8周，游戏结束。@@<br>
+游戏结束，统计该局游戏积分：@@剩余生命值 + 当前战斗力 + 剩余各项资源@@。<br>
+<br>
+积分排行榜暂时有问题暂时没做。<br>
+祝游戏愉快，进行更多挑战！<br>
+<br>
+[[开始冒险|卡牌说明]]
+</div>
+
+:: 卡牌说明
+<h2 style="letter-spacing: 1px; text-align: center">卡牌说明</h2><hr>
+<div class="cards">
+  <div class="card">
+    <div class="card-title">
+      可搜索的地点
+    </div>
+    <div class="card-content">
+      <div class="search">
+      可以获得的资源
+      </div>
+      <div class="find">
+      获得资源需要的条件<br>
+      消耗不同，获得相同<br>
+      </div>
+      <div class="upgrade">
+        <div class="toolTip">
+          改造、升级、探索需要的条件<br>
+          消耗不同，路线不同<br>
+          鼠标放上去可看对应路线<br>
+          <span class="toolTipText">
+            行动后下一周可探索的地点<br>
+            该地点可获得的资源<br>
+          </span>
+        </div><br>
+      </div>
+    </div>
+    <div class="card-footer">
+      <<button "搜索Ⅰ">>
+      <</button>>
+      <<button "搜索Ⅱ">>
+      <</button>>
+      <<button "改造Ⅰ">>
+      <</button>>
+      <<button "改造Ⅱ">>
+      <</button>>
+      <<button "点击继续 | 开始游戏" "卡牌显示界面">>
+      <</button>>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">
+      已知BUG说明
+    </div>
+    <div class="card-content">
+      1. 有时改造或探索花费资源会出现多扣情况，不同日期测试结果不同，有时没bug，原理不明。<br>
+      2. 原作可以在改造成功后，该局可以选择获得战力。
+      个人觉得是up示范时临时添的规则，大幅度降低游戏难度（虽然当前成功存活8周毫无难度），故没有作出修改，所以当前第一周会造成固定扣血的情况（暂不想修改）。<br>
+    </div><br>
+    <div class="card-footer">
+      <<button "确定 | 开始游戏" "卡牌显示界面">>
+      <</button>>
+    </div>
+  </div>
+</div>
+
+:: 卡牌显示界面
+<<do>>
+<<if $nowMap.length <= 0>>
+  <<run Dialog.create().wikiPassage("轮次").open()>>
+<<else>>
+  <div class="cards">
+    <<if $light>>
+      <<if $nowMap.length >= 2>>
+        <<include $currentLocation>>
+        <<include $netLocation>>
+      <<else>>
+        <<include $currentLocation>>
+      <</if>>
+    <<else>>
+      <<include $currentLocation>>
+    <</if>>
+  </div>
+<</if>>
+<</do>>
+
+/* <div class="showCards">
+  <div class="title">本轮周可探索</div>
+  <div class=content>
+    <div id="cardCounts">$nowMap.length</div>
+    <div id="cardName"><<= $nowMap.shuffle()>></div>
+  </div>
+</div> */
+
+:: 轮次
+<div style="text-align">
+<<switch $turns>>
+  <<case 1>>
+    第$turns周结束，@@需要达成''1''点战力@@。<br>
+    <<if $fight < 1>>
+      战力未达成，@@color:red;扣除''<<= 1 - $fight>>''点生命值@@。<br>
+      <<set $hp -= 1 - $fight>>
+    <</if>>
+  <<case 2>>
+    第$turns周结束，@@需要达成''2''点战力@@。<br>
+    <<if $fight < 2>>
+      战力未达成，@@color:red;扣除''<<= 2 - $fight>>''点生命值@@。<br>
+      <<set $hp -= 2 - $fight>>
+    <</if>>
+  <<case 3>>
+    第$turns周结束，@@需要达成''4''点战力@@。<br>
+    <<if $fight < 4>>
+      战力未达成，@@color:red;扣除''<<= 4 - $fight>>''点生命值@@。<br>
+      <<set $hp -= 4 - $fight>>
+    <</if>>
+  <<case 4>>
+    第$turns周结束，@@需要达成''8''点战力@@。<br>
+    <<if $fight < 8>>
+      战力未达成，@@color:red;扣除''<<= 8 - $fight>>''点生命值@@。<br>
+      <<set $hp -= 8 - $fight>>
+    <</if>>
+  <<case 5>>
+    第$turns周结束，@@需要达成''14''点战力@@。<br>
+    <<if $fight < 14>>
+      战力未达成，@@color:red;扣除''<<= 14 - $fight>>''点生命值@@。<br>
+      <<set $hp -= 14 - $fight>>
+    <</if>>
+  <<case 6>>  
+    第$turns周结束，@@需要达成''20''点战力@@。<br>
+    <<if $fight < 20>>
+      战力未达成，@@color:red;扣除''<<= 20 - $fight>>''点生命值@@。<br>
+      <<set $hp -= 20 - $fight>>
+    <</if>>
+  <<case 7>>
+    第$turns周结束，@@需要达成''26''点战力@@。<br>
+    <<if $fight < 26>>
+      战力未达成，@@color:red;扣除''<<= 26 - $fight>>''点生命值@@。<br>
+      <<set $hp -= 26 - $fight>>
+    <</if>>
+  <<case 8>>
+    第$turns周结束，@@需要达成''32''点战力@@。<br>
+    <<if $fight < 32>>
+      战力未达成，@@color:red;扣除''<<= 32 - $fight>>''点生命值@@。<br>
+      <<set $hp -= 32 - $fight>>
+    <</if>>
+<</switch>>
+<br>
+<<if $hp <= 0>>
+  <<set $hp = 0>><<redo>>
+  生命值归零，游戏结束。<br>
+  点击''确认''进入积分结算页面。<br>
+  <<button "确认" "积分结算">>
+    <<run Dialog.close()>>
+  <</button>>
+<<else>>
+  <<if $turns >= 4>>
+    从第''【5】''周开始，进入黑暗状态，只能看到一个地点。可消耗一个资源（@@点击左侧边栏“资源”@@），使本周处于光明状态。<br>
+  <</if>>
+  <br>
+  点击 ''确定'' 开始下一周。<br>
+  <br>
+  <<if $turns < 8>>
+    <<button "确定" "卡牌显示界面">>
+      <<set $nowMap = $cloneMap>>
+      <<set $turns += 1>>
+      <<if $turns > 4>>
+        <<set $light = false>>
+      <</if>>
+      <<include "重置主页显示卡牌">>
+      <<run Dialog.close()>>
+    <</button>>
+  <<else>>
+    第''【$turns】''周结束，点击''确定''进入积分结算页面。<br><br>
+    <<button "确定" "积分结算">>
+      <<run Dialog.close()>>
+    <</button>>
+  <</if>>
+<</if>>
+</div>
+
+:: 重置主页显示卡牌
+<<set $currentLocation = $nowMap[0]>>
+<<set $netLocation = $nowMap[1]>>
+
+:: 快餐店
+<div class="card">
+  <div class="card-title">
+    快餐店
+  </div>
+  <div class="card-content">
+    <div class="search">
+      食物：1
+      <<set _getFo = 1>>
+    </div>
+    <div class="upgrade">
+      <div class="toolTip">
+        ''Ⅰ''：1 食物
+        <span class="toolTipText">
+          轻食店<br>
+          食物：2<br>
+        </span>
+      </div>
+      <br>
+      <div class="toolTip">
+        ''Ⅱ''：1 食物
+        <span class="toolTipText">
+          高档餐厅<br>
+          食物：1 资源：1<br>
+        </span>
+      </div>
+    <<set _upFo = 1>>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<button "搜索" "卡牌显示界面">>
+      <<set $food += _upFo>>
+      <<set $nowMap.deleteFirst("快餐店")>>
+      <<set $cloneMap.deleteFirst("快餐店")>>
+      <<set $cloneMap.push("快餐店")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+    <<if $food >= _upFo>>
+      <<button "探索Ⅰ" "卡牌显示界面">>
+        <<set $food -= _upFo>>
+        <<set $nowMap.deleteFirst("快餐店")>>
+        <<set $cloneMap.deleteFirst("快餐店")>>
+        <<set $cloneMap.push("轻食店")>>
+        <<notify 3s>>
+          从下周开始，可以搜索【轻食店】。
+        <</notify>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+      <<button "探索Ⅱ" "卡牌显示界面">>
+        <<set $food -= _upFo>>
+        <<set $nowMap.deleteFirst("快餐店")>>
+        <<set $cloneMap.deleteFirst("快餐店")>>
+        <<set $cloneMap.push("高档餐厅")>>
+        <<notify 3s>>
+          从下周开始，可以搜索【高档餐厅】。
+        <</notify>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+  </div>
+</div>
+
+:: 轻食店
+<div class="card">
+  <div class="card-title">
+    轻食店
+  </div>
+  <div class="card-content">
+    <div class="search">
+      食物：2
+      <<set _getFo = 2>>
+    </div>
+    <div class="upgrade">
+      <div class="toolTip">
+        1 食物 | 1 资源<br>
+        <<set _upFo = 1, _upRe = 1>>
+        <span class="toolTipText">
+          高档餐厅<br>
+          食物：1 | 资源：1<br>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<button "搜索" "卡牌显示界面">>
+      <<set $food += _getFo>>
+      <<set $nowMap.deleteFirst("轻食店")>>
+      <<set $cloneMap.deleteFirst("轻食店")>>
+      <<set $cloneMap.push("轻食店")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+    <<if $food >= _upFo && $resource >= _upRe>>
+      <<button "探索" "卡牌显示界面">>
+        <<set $food -= _upFo>>
+        <<set $resource -= _upRe>>
+        <<set $nowMap.deleteFirst("轻食店")>>
+        <<set $cloneMap.deleteFirst("轻食店")>>
+        <<set $cloneMap.push("高档餐厅")>>
+        <<notify 3s>>
+          从下周开始，可以搜索【高档餐厅】。
+        <</notify>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+  </div>
+</div>
+
+:: 高档餐厅
+<div class="card">
+  <div class="card-title">
+    高档餐厅
+  </div>
+  <div class="card-content">
+    <div class="search">
+      食物：1 | 资源：1
+      <<set _getFo = 1, _getRe = 1>>
+    </div>
+    <div class="upgrade">
+      <div class="toolTip">
+        1 食物 | 1 资源<br>
+        <<set _upFo = 1, _upRe = 1>>
+        <span class="toolTipText">
+          豪华酒店<br>
+          食物：2 | 资源：1<br>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<button "搜索" "卡牌显示界面">>
+      <<set $food += _getFo>>
+      <<set $resource += _getRe>>
+      <<set $nowMap.deleteFirst("高档餐厅")>>
+      <<set $cloneMap.deleteFirst("高档餐厅")>>
+      <<set $cloneMap.push("高档餐厅")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+    <<if $food >= _upFo && $resource >= _upRe>>
+      <<button "探索" "卡牌显示界面">>
+        <<set $food -= _upFo>>
+        <<set $resource -= _upRe>>
+        <<set $nowMap.deleteFirst("高档餐厅")>>
+        <<set $cloneMap.deleteFirst("高档餐厅")>>
+        <<set $cloneMap.push("豪华酒店")>>
+        <<notify 3s>>
+          从下周开始，可以搜索【豪华酒店】。
+        <</notify>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+  </div>
+</div>
+
+:: 豪华酒店
+<div class="card">
+  <div class="card-title">
+    豪华酒店
+  </div>
+  <div class="card-content">
+    <div class="search">
+      食物：2 | 资源：1
+      <<set _getFo = 2, _getRe = 1>>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<button "搜索" "卡牌显示界面">>
+      <<set $food += _getFo>>
+      <<set $resource += _getRe>>
+      <<set $nowMap.deleteFirst("豪华酒店")>>
+      <<set $cloneMap.deleteFirst("豪华酒店")>>
+      <<set $cloneMap.push("豪华酒店")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+  </div>
+</div>
+
+:: 杂货店
+<div class="card">
+  <div class="card-title">
+    杂货店
+  </div>
+  <div class="card-content">
+    <div class="search">
+      资源：1
+    <<set _getRe = 1>>
+    </div>
+    <div class="upgrade">
+      <div class="toolTip">
+        1 资源 | 1 食物<br>
+        <span class="toolTipText">
+          五金店<br>
+          资源：1<br>或<br>战斗力：1<br>
+        </span>
+        <<set _upRe = 1, _upFo = 1>>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<button "搜索" "卡牌显示界面">>
+      <<set $resource += _getRe>>
+      <<set $nowMap.deleteFirst("杂货店")>>
+      <<set $cloneMap.deleteFirst("杂货店")>>
+      <<set $cloneMap.push("杂货店")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+    <<if $food >= _upFo && $resource >= _upRe>>
+      <<button "探索" "卡牌显示界面">>
+        <<set $food -= _upFo>>
+        <<set $resource -= _upRe>>
+        <<set $nowMap.deleteFirst("杂货店")>>
+        <<set $cloneMap.deleteFirst("杂货店")>>
+        <<set $cloneMap.push("五金店")>>
+        <<notify 3s>>
+          从下周开始，可以搜索【五金店】。
+        <</notify>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+
+  </div>
+</div>
+
+:: 五金店
+<div class="card">
+  <div class="card-title">
+    五金店
+  </div>
+  <div class="card-content">
+    <div class="search">
+      资源：1 或 战斗力：1<br>
+      <<set _getRe = 1, _getFi = 1>>
+    </div>
+    <div class="upgrade">
+      <div class="toolTip">
+        1 资源 | 1 工具<br>
+        <span class="toolTipText">
+          器械中心<br>
+          资源：2 或 战斗力：2<br>
+        </span>
+        <<set _upRe = 1, _upTo = 1>>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<button "资源" "卡牌显示界面">>
+      <<set $resource += _getRe>>
+      <<set $nowMap.deleteFirst("五金店")>>
+      <<set $cloneMap.deleteFirst("五金店")>>
+      <<set $cloneMap.push("五金店")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+    <<button "战斗力" "卡牌显示界面">>
+      <<set $fight += _getFi>>
+      <<set $nowMap.deleteFirst("五金店")>>
+      <<set $cloneMap.deleteFirst("五金店")>>
+      <<set $cloneMap.push("五金店")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+    <<if $tool >= _upTo && $resource >= _upRe>>
+      <<button "探索" "卡牌显示界面">>
+        <<set $tool -= _upTo>>
+        <<set $resource -= _upRe>>
+        <<set $nowMap.deleteFirst("五金店")>>
+        <<set $cloneMap.deleteFirst("五金店")>>
+        <<set $cloneMap.push("器械中心")>>
+        <<notify 3s>>
+          从下周开始，可以搜索【器械中心】。
+        <</notify>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+  </div>
+</div>
+
+:: 器械中心
+<div class="card">
+  <div class="card-title">
+    器械中心
+  </div>
+  <div class="card-content">
+    <div class="search">
+      资源：2 或 战斗力：2<br>
+      <<set _getRe = 1, _getFi = 1>>
+    </div>
+    <div class="upgrade">
+      <div class="toolTip">
+        2 资源 | 2 工具<br>
+        <span class="toolTipText">
+          器具厂<br>
+          战斗力：5<br>
+        </span>
+        <<set _upRe = 2, _upTo = 2>>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<button "资源" "卡牌显示界面">>
+      <<set $resource += _getRe>>
+      <<set $nowMap.deleteFirst("器械中心")>>
+      <<set $cloneMap.deleteFirst("器械中心")>>
+      <<set $cloneMap.push("器械中心")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+    <<button "战斗力" "卡牌显示界面">>
+      <<set $fight += _getFi>>
+      <<set $nowMap.deleteFirst("器械中心")>>
+      <<set $cloneMap.deleteFirst("器械中心")>>
+      <<set $cloneMap.push("器械中心")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+    <<if $tool >= _upTo && $resource >= _upRe>>
+      <<button "探索" "卡牌显示界面">>
+        <<set $tool -= _upTo>>
+        <<set $resource -= _upRe>>
+        <<set $nowMap.deleteFirst("器械中心")>>
+        <<set $cloneMap.deleteFirst("器械中心")>>
+        <<set $cloneMap.push("器具厂")>>
+        <<notify 3s>>
+          从下周开始，可以搜索【器具厂】。
+        <</notify>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+  </div>
+</div>
+
+:: 器具厂
+<div class="card">
+  <div class="card-title">
+    器具厂
+  </div>
+  <div class="card-content">
+    <div class="search">
+      战斗力：5<br>
+      <<set _getFi = 5>>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<button "搜索" "卡牌显示界面">>
+      <<set $fight += _getFi>>
+      <<set $nowMap.deleteFirst("器具厂")>>
+      <<set $cloneMap.deleteFirst("器具厂")>>
+      <<set $cloneMap.push("器具厂")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+  </div>
+</div>
+
+:: 保安亭
+<div class="card">
+  <div class="card-title">
+    保安亭
+  </div>
+  <div class="card-content">
+    <div class="upgrade">
+      <div class="toolTip">
+        ''Ⅰ''：2 资源<br>
+        <span class="toolTipText">
+          派出所<br>
+          工具：1<br>
+        </span>
+      </div>
+      <br>
+      <div class="toolTip">
+        ''Ⅱ''：2 食物<br>
+        <span class="toolTipText">
+          公安局<br>
+          工具：1<br>
+        </span>
+      </div>
+      <<set _upRe = 2, _upFo = 2>>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<button "继续" "卡牌显示界面">>
+      <<set $nowMap.deleteFirst("保安亭")>>
+      <<set $cloneMap.deleteFirst("保安亭")>>
+      <<set $cloneMap.push("保安亭")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+    <<if $resource >= _upRe>>
+      <<button "探索Ⅰ" "卡牌显示界面">>
+        <<set $resource -= _upRe>>
+        <<set $nowMap.deleteFirst("保安亭")>>
+        <<set $cloneMap.deleteFirst("保安亭")>>
+        <<set $cloneMap.push("派出所")>>
+        <<notify 3s>>
+          从下周开始，可以搜索【派出所】。
+        <</notify>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+    <<if $food >= _upFo>>
+      <<button "探索Ⅱ" "卡牌显示界面">>
+        <<set $food -= _upFo>>
+        <<set $nowMap.deleteFirst("保安亭")>>
+        <<set $cloneMap.deleteFirst("保安亭")>>
+        <<set $cloneMap.push("公安局")>>
+        <<notify 3s>>
+          从下周开始，可以搜索【公安局】。
+        <</notify>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+  </div>
+</div>
+
+:: 派出所
+<div class="card">
+  <div class="card-title">
+    派出所
+  </div>
+  <div class="card-content">
+    <div class="search">
+      工具：1<br>
+      <<set _getTo = 1>>
+    </div>
+    <div class="upgrade">
+      <div class="toolTip">
+        2 资源 | 1 食物<br>
+        <span class="toolTipText">
+          公安局<br>
+          工具：1<br>
+        </span>
+        <<set _upRe = 2, _upFo = 1>>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<button "搜索" "卡牌显示界面">>
+      <<set $tool += _getTo>>
+      <<set $nowMap.deleteFirst("派出所")>>
+      <<set $cloneMap.deleteFirst("派出所")>>
+      <<set $cloneMap.push("派出所")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+    <<if $resource >= _upRe && $food >= _upFo>>
+      <<button "探索" "卡牌显示界面">>
+        <<set $resource -= _upRe>>
+        <<set $food -= _upFo>>
+        <<set $nowMap.deleteFirst("派出所")>>
+        <<set $cloneMap.deleteFirst("派出所")>>
+        <<set $cloneMap.push("公安局")>>
+        <<notify 3s>>
+          从下周开始，可以搜索【公安局】。
+        <</notify>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+  </div>
+</div>
+
+:: 公安局
+<div class="card">
+  <div class="card-title">
+    公安局
+  </div>
+  <div class="card-content">
+    <div class="search">
+      工具：1<br>
+      <<set _getTo = 1>>
+    </div>
+    <div class="upgrade">
+      <div class="toolTip">
+        1 资源 | 2 食物<br>
+        <span class="toolTipText">
+          武警大队<br>
+          工具：2<br>
+          或<br>
+          战斗力：2<br>
+        </span>
+        <<set _upRe = 1, _upFo = 2>>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<button "搜索" "卡牌显示界面">>
+      <<set $tool += _getTo>>
+      <<set $nowMap.deleteFirst("公安局")>>
+      <<set $cloneMap.deleteFirst("公安局")>>
+      <<set $cloneMap.push("公安局")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+    <<if $resource >= _upRe && $food >= _upFo>>
+      <<button "探索" "卡牌显示界面">>
+        <<set $resource -= _upRe>>
+        <<set $food -= _upFo>>
+        <<set $nowMap.deleteFirst("公安局")>>
+        <<set $cloneMap.deleteFirst("公安局")>>
+        <<set $cloneMap.push("武警大队")>>
+        <<notify 3s>>
+          从下周开始，可以搜索【武警大队】。
+        <</notify>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+  </div>
+</div>
+
+:: 武警大队
+<div class="card">
+  <div class="card-title">
+    武警大队
+  </div>
+  <div class="card-content">
+    <div class="search">
+      工具：2 或 战斗力：2<br>
+      <<set _getTo = 2, _getFi = 2>>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<button "工具" "卡牌显示界面">>
+      <<set $tool += _getTo>>
+      <<set $nowMap.deleteFirst("武警大队")>>
+      <<set $cloneMap.deleteFirst("武警大队")>>
+      <<set $cloneMap.push("武警大队")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+    <<button "战斗力" "卡牌显示界面">>
+      <<set $fight += _getFi>>
+      <<set $nowMap.deleteFirst("武警大队")>>
+      <<set $cloneMap.deleteFirst("武警大队")>>
+      <<set $cloneMap.push("武警大队")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+    <<button "继续" "卡牌显示界面">>
+      <<set $nowMap.deleteFirst("武警大队")>>
+      <<set $cloneMap.deleteFirst("武警大队")>>
+      <<set $cloneMap.push("武警大队")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+  </div>
+</div>
+
+:: 安全屋Ⅰ
+<div class="card">
+  <div class="card-title">
+    安全屋Ⅰ
+  </div>
+  <div class="card-content">
+    <div class="upgrade">
+      <div class="toolTip">
+        1 资源 | 1 食物 | 2 工具<br>
+        <span class="toolTipText">
+          安全屋Ⅱ<br>
+          战斗力：3<br>
+        </span>
+        <<set _upRe = 1, _upFo = 1, _upTo = 2>>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<button "继续" "卡牌显示界面">>
+      <<set $nowMap.deleteFirst("安全屋Ⅰ")>>
+      <<set $cloneMap.deleteFirst("安全屋Ⅰ")>>
+      <<set $cloneMap.push("安全屋Ⅰ")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+    <<if $resource >= _upRe && $food >= _upFo && $tool >= _upTo>>
+      <<button "升级" "卡牌显示界面">>
+        <<set $resource -= _upRe>>
+        <<set $food -= _upFo>>
+        <<set $tool -= _upTo>>
+        <<set $nowMap.deleteFirst("安全屋Ⅰ")>>
+        <<set $cloneMap.deleteFirst("安全屋Ⅰ")>>
+        <<set $cloneMap.push("安全屋Ⅱ")>>
+        <<notify 3s>>
+          升级到【安全屋Ⅱ】。
+        <</notify>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+  </div>
+</div>
+
+:: 安全屋Ⅱ
+<div class="card">
+  <div class="card-title">
+    安全屋Ⅱ
+  </div>
+  <div class="card-content">
+    <div class="search">
+      战斗力：3<br>
+      <<set _getFi = 3>>
+    </div>
+    <div class="upgrade">
+      <div class="toolTip">
+        2 资源 | 2 食物 | 3 工具<br>
+        <span class="toolTipText">
+          安全屋Ⅲ<br>
+          战斗力：6<br>
+        </span>
+        <<set _upRe = 2, _upFo = 2, _upTo = 3>>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<button "继续" "卡牌显示界面">>
+      <<set $fight += _getFi>>
+      <<set $nowMap.deleteFirst("安全屋Ⅱ")>>
+      <<set $cloneMap.deleteFirst("安全屋Ⅱ")>>
+      <<set $cloneMap.push("安全屋Ⅱ")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+    <<if $resource >= _upRe && $food >= _upFo && $tool >= _upTo>>
+      <<button "升级" "卡牌显示界面">>
+        <<set $resource -= _upRe>>
+        <<set $food -= _upFo>>
+        <<set $tool -= _upTo>>
+        <<set $nowMap.deleteFirst("安全屋Ⅱ")>>
+        <<set $cloneMap.deleteFirst("安全屋Ⅱ")>>
+        <<set $cloneMap.push("安全屋Ⅲ")>>
+        <<notify 3s>>
+          升级到【安全屋Ⅲ】。
+        <</notify>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+  </div>
+</div>
+
+:: 安全屋Ⅲ
+<div class="card">
+  <div class="card-title">
+    安全屋Ⅲ
+  </div>
+  <div class="card-content">
+    <div class="search">
+      战斗力：6<br>
+      <<set _getFi = 6>>
+    </div>
+    <div class="upgrade">
+        <div class="toolTip">
+        3 资源 | 3 食物 | 4 工具<br>
+        <span class="toolTipText">
+          安全屋Ⅳ<br>
+          战斗力：10<br>
+        </span>
+        <<set _upRe = 3, _upFo = 3, _upTo = 4>>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<button "继续" "卡牌显示界面">>
+      <<set $fight += _getFi>>
+      <<set $nowMap.deleteFirst("安全屋Ⅲ")>>
+      <<set $cloneMap.deleteFirst("安全屋Ⅲ")>>
+      <<set $cloneMap.push("安全屋Ⅲ")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+    <<if $resource >= _upRe && $food >= _upFo && $tool >= _upTo>>
+      <<button "升级" "卡牌显示界面">>
+        <<set $resource -= _upRe>>
+        <<set $food -= _upFo>>
+        <<set $tool -= _upTo>>
+        <<set $nowMap.deleteFirst("安全屋Ⅲ")>>
+        <<set $cloneMap.deleteFirst("安全屋Ⅲ")>>
+        <<set $cloneMap.push("安全屋Ⅳ")>>
+        <<notify 3s>>
+          升级到【安全屋Ⅳ】。
+        <</notify>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+  </div>
+</div>
+
+:: 安全屋Ⅳ
+<div class="card">
+  <div class="card-title">
+    安全屋Ⅲ
+  </div>
+  <div class="card-content">
+    <div class="search">
+      战斗力：10<br>
+      <<set _getFi = 10>>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<button "继续" "卡牌显示界面">>
+      <<set $fight += _getFi>>
+      <<set $nowMap.deleteFirst("安全屋Ⅳ")>>
+      <<set $cloneMap.deleteFirst("安全屋Ⅳ")>>
+      <<set $cloneMap.push("安全屋Ⅳ")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+  </div>
+</div>
+
+:: 庇护所Ⅰ
+<div class="card">
+  <div class="card-title">
+    庇护所Ⅰ
+  </div>
+  <div class="card-content">
+    <div class="upgrade">
+      <div class="toolTip">
+      1 资源 | 1 食物<br>
+      <span class="toolTipText">
+      庇护所Ⅱ<br>
+      战斗力：1<br>
+      </span>
+      <<set _upRe = 1, _upFo = 1>>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<button "继续" "卡牌显示界面">>
+      <<set $nowMap.deleteFirst("庇护所Ⅰ")>>
+      <<set $cloneMap.deleteFirst("庇护所Ⅰ")>>
+      <<set $cloneMap.push("庇护所Ⅰ")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+    <<if $resource >= _upRe && $food >= _upFo>>
+      <<button "升级" "卡牌显示界面">>
+        <<set $resource -= _upRe>>
+        <<set $food -= _upFo>>
+        <<set $nowMap.deleteFirst("庇护所Ⅰ")>>
+        <<set $cloneMap.deleteFirst("庇护所Ⅰ")>>
+        <<set $cloneMap.push("庇护所Ⅱ")>>
+        <<notify 3s>>
+          升级到【庇护所Ⅱ】。
+        <</notify>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+  </div>
+</div>
+
+:: 庇护所Ⅱ
+<div class="card">
+  <div class="card-title">
+    庇护所Ⅱ
+  </div>
+  <div class="card-content">
+    <div class="search">
+    战斗力：1<br>
+    <<set _getFi = 1>>
+    </div>
+    <div class="upgrade">
+      <div class="toolTip">
+      1 资源 | 1 食物 | 1 工具<br>
+      <span class="toolTipText">
+      庇护所Ⅲ<br>
+      战斗力：3<br>
+      </span>
+      <<set _upRe = 1, _upFo = 1, _upTo = 1>>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<button "继续" "卡牌显示界面">>
+      <<set $fight += _getFi>>
+      <<set $nowMap.deleteFirst("庇护所Ⅱ")>>
+      <<set $cloneMap.deleteFirst("庇护所Ⅱ")>>
+      <<set $cloneMap.push("庇护所Ⅱ")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+    <<if $resource >= _upRe && $food >= _upFo && $tool >= _upTo>>
+      <<button "升级" "卡牌显示界面">>
+        <<set $resource -= _upRe>>
+        <<set $food -= _upFo>>
+        <<set $tool -= _upTo>>
+        <<set $nowMap.deleteFirst("庇护所Ⅱ")>>
+        <<set $cloneMap.deleteFirst("庇护所Ⅱ")>>
+        <<set $cloneMap.push("庇护所Ⅲ")>>
+        <<notify 3s>>
+          升级到【庇护所Ⅲ】。
+        <</notify>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+  </div>
+</div>
+
+:: 庇护所Ⅲ
+<div class="card">
+  <div class="card-title">
+    庇护所Ⅲ
+  </div>
+  <div class="card-content">
+    <div class="search">
+    战斗力：3<br>
+    <<set _getFi = 3>>
+    </div>
+    <div class="upgrade">
+      <div class="toolTip">
+      2 资源 | 2 食物 | 2 工具<br>
+      <span class="toolTipText">
+      庇护所Ⅳ<br>
+      战斗力：6<br>
+      </span>
+      <<set _upRe = 2, _upFo = 2, _upTo = 2>>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<button "继续" "卡牌显示界面">>
+      <<set $fight += _getFi>>
+      <<set $nowMap.deleteFirst("庇护所Ⅲ")>>
+      <<set $cloneMap.deleteFirst("庇护所Ⅲ")>>
+      <<set $cloneMap.push("庇护所Ⅲ")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+    <<if $resource >= _upRe && $food >= _upFo && $tool >= _upTo>>
+      <<button "升级" "卡牌显示界面">>
+        <<set $resource -= _upRe>>
+        <<set $food -= _upFo>>
+        <<set $tool -= _upTo>>
+        <<set $nowMap.deleteFirst("庇护所Ⅲ")>>
+        <<set $cloneMap.deleteFirst("庇护所Ⅲ")>>
+        <<set $cloneMap.push("庇护所Ⅳ")>>
+        <<notify 3s>>
+          升级到【庇护所Ⅳ】。
+        <</notify>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+  </div>
+</div>
+
+:: 庇护所Ⅳ
+<div class="card">
+  <div class="card-title">
+    庇护所Ⅳ
+  </div>
+  <div class="card-content">
+    <div class="search">
+    战斗力：6<br>
+    <<set _getFi = 6>>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<button "继续" "卡牌显示界面">>
+      <<set $fight += _getFi>>
+      <<set $nowMap.deleteFirst("庇护所Ⅳ")>>
+      <<set $cloneMap.deleteFirst("庇护所Ⅳ")>>
+      <<set $cloneMap.push("庇护所Ⅳ")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+  </div>
+</div>
+
+:: 连锁超市Ⅰ
+<div class="card">
+  <div class="card-title">
+    连锁超市Ⅰ
+  </div>
+  <div class="card-content">
+    <div class="search">
+      资源：1 | 食物：1
+      <<set _getRe = 1, _getFo = 1>>
+    </div>
+    <div class="find">
+      ''Ⅰ''：2 食物<br>
+      ''Ⅱ''：2 资源<br>
+      <<set _seFo = 2, _seRe = 2>>
+    </div>
+    <div class="upgrade">
+      <div class="toolTip">
+        ''Ⅰ''：1 资源
+        <span class="toolTipText">
+          连锁超市Ⅱ<br>
+          食物：3<br>
+        </span>
+      </div><br>
+      <div class="toolTip">
+        ''Ⅱ''：1 食物
+        <span class="toolTipText">
+          连锁超市Ⅲ<br>
+          资源：3<br>
+        </span>
+      </div>
+      <br>
+    <<set _upRe = 1, _upFo = 1>>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<if $food >= _seFo>>
+      <<button "搜索Ⅰ" "卡牌显示界面">>
+        <<set $food -= _seFo>>
+        <<set $resource += _getRe>>
+        <<set $food += _getFo>>
+        <<set $nowMap.deleteFirst("连锁超市Ⅰ")>>
+        <<set $cloneMap.deleteFirst("连锁超市Ⅰ")>>
+        <<set $cloneMap.push("连锁超市Ⅰ")>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+    <<if $resource >= _seRe>>
+      <<button "搜索Ⅱ" "卡牌显示界面">>
+        <<set $resource -= _seRe>>
+        <<set $resource += _getRe>>
+        <<set $food += _getFo>>
+        <<set $nowMap.deleteFirst("连锁超市Ⅰ")>>
+        <<set $cloneMap.deleteFirst("连锁超市Ⅰ")>>
+        <<set $cloneMap.push("连锁超市Ⅰ")>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+    <<if $resource >= _upRe>>
+      <<button "改造Ⅰ" "卡牌显示界面">>
+        <<set $resource -= _upRe>>
+        <<set $nowMap.deleteFirst("连锁超市Ⅰ")>>
+        <<set $cloneMap.deleteFirst("连锁超市Ⅰ")>>
+        <<set $cloneMap.push("连锁超市Ⅱ")>>
+        <<notify 3s>>
+          改造为【连锁超市Ⅱ】。
+        <</notify>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+    <<if $food >= _upFo>>
+      <<button "改造Ⅱ" "卡牌显示界面">>
+        <<set $food -= _upFo>>
+        <<set $nowMap.deleteFirst("连锁超市Ⅰ")>>
+        <<set $cloneMap.deleteFirst("连锁超市Ⅰ")>>
+        <<set $cloneMap.push("连锁超市Ⅲ")>>
+        <<include "重置主页显示卡牌">>
+        <<notify 3s>>
+          改造为【连锁超市Ⅲ】。
+        <</notify>>
+      <</button>>
+    <</if>>
+    <<button "继续" "卡牌显示界面">>
+      <<set $nowMap.deleteFirst("连锁超市Ⅰ")>>
+      <<set $cloneMap.deleteFirst("连锁超市Ⅰ")>>
+      <<set $cloneMap.push("连锁超市Ⅰ")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+  </div>
+</div>
+
+:: 连锁超市Ⅱ
+<div class="card">
+  <div class="card-title">
+    连锁超市Ⅱ
+  </div>
+  <div class="card-content">
+    <div class="search">
+    食物：3<br>
+    <<set _getFo = 3>>
+    </div>
+    <div class="find">
+    ''Ⅰ''：2 资源<br>
+    ''Ⅱ''：2 工具<br>
+    <<set _seRe = 2, _seTo = 2>>
+    </div>
+    <div class="upgrade">
+      <div class="toolTip">
+      1 资源 1 食物<br>
+      <span class="toolTipText">
+      连锁超市Ⅳ<br>
+      工具：3<br>
+      </span>
+      <<set _upRe = 1, _upFo = 1>>
+      </div>
+    </div>
+    <br>
+  </div>
+  <div class="card-footer">
+    <<if $resource >= _seRe>>
+      <<button "搜索Ⅰ" "卡牌显示界面">>
+        <<set $resource -= _seRe>>
+        <<set $food += _getFo>>
+        <<set $nowMap.deleteFirst("连锁超市Ⅱ")>>
+        <<set $cloneMap.deleteFirst("连锁超市Ⅱ")>>
+        <<set $cloneMap.push("连锁超市Ⅱ")>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+    <<if $tool >= _seTo>>
+      <<button "搜索Ⅱ" "卡牌显示界面">>
+        <<set $tool -= _seTo>>
+        <<set $food += _getFo>>
+        <<set $nowMap.deleteFirst("连锁超市Ⅱ")>>
+        <<set $cloneMap.deleteFirst("连锁超市Ⅱ")>>
+        <<set $cloneMap.push("连锁超市Ⅱ")>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+    <<if $resource >= _upRe && $food >= _upFo>>
+      <<button "改造" "卡牌显示界面">>
+        <<set $resource -= _upRe>>
+        <<set $food -= _upFo>>
+        <<set $nowMap.deleteFirst("连锁超市Ⅱ")>>
+        <<set $cloneMap.deleteFirst("连锁超市Ⅱ")>>
+        <<set $cloneMap.push("连锁超市Ⅳ")>>
+        <<notify 3s>>
+          改造为【连锁超市Ⅳ】。
+        <</notify>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+    <<button "继续" "卡牌显示界面">>
+      <<set $nowMap.deleteFirst("连锁超市Ⅱ")>>
+      <<set $cloneMap.deleteFirst("连锁超市Ⅱ")>>
+      <<set $cloneMap.push("连锁超市Ⅱ")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+  </div>
+</div>
+
+:: 连锁超市Ⅲ
+<div class="card">
+  <div class="card-title">
+    连锁超市Ⅲ
+  </div>
+  <div class="card-content">
+    <div class="search">
+      资源：3<br>
+      <<set _getRe = 3>>
+    </div>
+    <div class="find">
+      ''Ⅰ''：2 食物<br>
+      ''Ⅱ''：2 工具<br>
+      <<set _seFo = 2, _seTo = 2>>
+    </div>
+    <div class="upgrade">
+      <div class="toolTip">
+        1 资源 | 1 食物<br>
+        <span class="toolTipText">
+          连锁超市Ⅳ<br>
+          工具：3<br>
+        </span>
+        <<set _upRe = 1, _upFo = 1>>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<if $food >= _seFo>>
+      <<button "搜索Ⅰ" "卡牌显示界面">>
+        <<set $food -= _seFo>>
+        <<set $resource += _getRe>>
+        <<set $nowMap.deleteFirst("连锁超市Ⅲ")>>
+        <<set $cloneMap.deleteFirst("连锁超市Ⅲ")>>
+        <<set $cloneMap.push("连锁超市Ⅲ")>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+    <<if $tool >= _seTo>>
+      <<button "搜索Ⅱ" "卡牌显示界面">>
+        <<set $tool -= _seTo>>
+        <<set $resource += _getRe>>
+        <<set $nowMap.deleteFirst("连锁超市Ⅲ")>>
+        <<set $cloneMap.deleteFirst("连锁超市Ⅲ")>>
+        <<set $cloneMap.push("连锁超市Ⅲ")>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+    <<if $resource >= _upRe && $food >= _upFo>>
+      <<button "改造" "卡牌显示界面">>
+        <<set $resource -= _upRe>>
+        <<set $food -= _upFo>>
+        <<set $nowMap.deleteFirst("连锁超市Ⅲ")>>
+        <<set $cloneMap.deleteFirst("连锁超市Ⅲ")>>
+        <<set $cloneMap.push("连锁超市Ⅳ")>>
+        <<notify 3s>>
+          升级到【连锁超市Ⅳ】。
+        <</notify>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+    <<button "继续" "卡牌显示界面">>
+      <<set $nowMap.deleteFirst("连锁超市Ⅲ")>>
+      <<set $cloneMap.deleteFirst("连锁超市Ⅲ")>>
+      <<set $cloneMap.push("连锁超市Ⅲ")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+  </div>
+</div>
+
+:: 连锁超市Ⅳ
+<div class="card">
+  <div class="card-title">
+    连锁超市Ⅳ
+  </div>
+  <div class="card-content">
+    <div class="search">
+      工具：3<br>
+      <<set _getTo = 3>>
+    </div>
+    <div class="find">
+      ''Ⅰ''：2 食物<br>
+      ''Ⅱ''：2 资源<br>
+      <<set _seFo = 2, _seRe = 2>>
+    </div>
+    <div class="upgrade">
+      <div class="toolTip">
+        ''Ⅰ''：1 工具<br>
+        <span class="toolTipText">
+          连锁超市Ⅱ<br>
+          食物：3<br>
+        </span>
+      </div><br>
+      <div class="toolTip">
+        ''Ⅱ''：1 工具<br>
+        <span class="toolTipText">
+          连锁超市Ⅲ<br>
+          资源：3<br>
+        </span>
+      </div>
+      <<set _upTo = 1>>
+    </div>
+    <br>
+  </div>
+  <div class="card-footer">
+    <<if $food >= _seFo>>
+      <<button "搜索Ⅰ" "卡牌显示界面">>
+        <<set $food -= _seFo>>
+        <<set $tool += _getTo>>
+        <<set $nowMap.deleteFirst("连锁超市Ⅳ")>>
+        <<set $cloneMap.deleteFirst("连锁超市Ⅳ")>>
+        <<set $cloneMap.push("连锁超市Ⅳ")>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+    <<if $resource >= _seRe>>
+      <<button "搜索Ⅱ" "卡牌显示界面">>
+        <<set $resource -= _seRe>>
+        <<set $tool += _getTo>>
+        <<set $nowMap.deleteFirst("连锁超市Ⅳ")>>
+        <<set $cloneMap.deleteFirst("连锁超市Ⅳ")>>
+        <<set $cloneMap.push("连锁超市Ⅳ")>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+    <<if $tool >= _upTo>>
+      <<button "改造Ⅰ" "卡牌显示界面">>
+        <<set $tool -= _upTo>>
+        <<set $nowMap.deleteFirst("连锁超市Ⅳ")>>
+        <<set $cloneMap.deleteFirst("连锁超市Ⅳ")>>
+        <<set $cloneMap.push("连锁超市Ⅱ")>>
+        <<notify 3s>>
+          改造为【连锁超市Ⅱ】。
+        <</notify>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+    <<if $tool >= _upTo>>
+      <<button "改造Ⅱ" "卡牌显示界面">>
+        <<set $tool -= _upTo>>
+        <<set $nowMap.deleteFirst("连锁超市Ⅳ")>>
+        <<set $cloneMap.deleteFirst("连锁超市Ⅳ")>>
+        <<set $cloneMap.push("连锁超市Ⅲ")>>
+        <<notify 3s>>
+          改造为【连锁超市Ⅲ】。
+        <</notify>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+    <<button "继续" "卡牌显示界面">>
+      <<set $nowMap.deleteFirst("连锁超市Ⅳ")>>
+      <<set $cloneMap.deleteFirst("连锁超市Ⅳ")>>
+      <<set $cloneMap.push("连锁超市Ⅳ")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+  </div>
+</div>
+
+:: 购物中心Ⅰ
+<div class="card">
+  <div class="card-title">
+    购物中心Ⅰ
+  </div>
+  <div class="card-content">
+    <div class="search">
+      工具：1<br>
+      <<set _getTo = 1>>
+    </div>
+    <div class="find">
+      ''Ⅰ''：1 资源<br>
+      ''Ⅱ''：1 食物<br>
+      <<set _seRe = 1, _seFo = 1>>
+    </div>
+    <div class="upgrade">
+      <div class="toolTip">
+        ''Ⅰ''：2 资源<br>
+        <span class="toolTipText">
+          购物中心Ⅱ<br>
+          食物：1 | 工具：1<br>
+        </span>
+        <<set _upRe = 2>>
+      </div><br>
+      <div class="toolTip">
+        ''Ⅱ''：2 食物<br>
+        <span class="toolTipText">
+          购物中心Ⅲ<br>
+          资源：1 | 工具：1<br>
+        </span>
+        <<set _upFo = 2>>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<if $resource >= _seRe>>
+      <<button "搜索Ⅰ" "卡牌显示界面">>
+        <<set $resource -= _seRe>>
+        <<set $tool += _getTo>>
+        <<set $nowMap.deleteFirst("购物中心Ⅰ")>>
+        <<set $cloneMap.deleteFirst("购物中心Ⅰ")>>
+        <<set $cloneMap.push("购物中心Ⅰ")>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+    <<if $food >= _seFo>>
+      <<button "搜索Ⅱ" "卡牌显示界面">>
+        <<set $food -= _seFo>>
+        <<set $tool += _getTo>>
+        <<set $nowMap.deleteFirst("购物中心Ⅰ")>>
+        <<set $cloneMap.deleteFirst("购物中心Ⅰ")>>
+        <<set $cloneMap.push("购物中心Ⅰ")>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+    <<if $resource >= _upRe>>
+      <<button "改造Ⅰ" "卡牌显示界面">>
+        <<set $resource -= _upRe>>
+        <<set $nowMap.deleteFirst("购物中心Ⅰ")>>
+        <<set $cloneMap.deleteFirst("购物中心Ⅰ")>>
+        <<set $cloneMap.push("购物中心Ⅱ")>>
+        <<notify 3s>> 
+          升级到【购物中心Ⅱ】。 
+        <</notify>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+    <<if $food >= _upFo>>
+      <<button "改造Ⅱ" "卡牌显示界面">>
+        <<set $food -= _upFo>>
+        <<set $nowMap.deleteFirst("购物中心Ⅰ")>>
+        <<set $cloneMap.deleteFirst("购物中心Ⅰ")>>
+        <<set $cloneMap.push("购物中心Ⅲ")>>
+        <<notify 3s>>
+          升级到【购物中心Ⅲ】。
+        <</notify>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+    <<button "继续" "卡牌显示界面">>
+      <<set $nowMap.deleteFirst("购物中心Ⅰ")>>
+      <<set $cloneMap.deleteFirst("购物中心Ⅰ")>>
+      <<set $cloneMap.push("购物中心Ⅰ")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+  </div>
+</div>
+
+:: 购物中心Ⅱ
+<div class="card">
+  <div class="card-title">
+    购物中心Ⅱ
+  </div>
+  <div class="card-content">
+    <div class="search">
+    食物：1 | 工具：1<br>
+    <<set _getFo = 1, _getTo = 1>>
+    </div>
+    <div class="find">
+      ''搜索''：1 资源<br>
+      <<set _seRe = 1>>
+    </div>
+    <div class="upgrade">
+      <div class="toolTip">
+        1 资源 | 1 工具<br>
+        <span class="toolTipText">
+          购物中心Ⅲ<br>
+          资源：1 | 工具：1<br>
+        </span>
+        <<set _upRe = 1, _upFo = 1>>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<if $resource >= _seRe>>
+      <<button "搜索" "卡牌显示界面">>
+        <<set $resource -= _seRe>>
+        <<set $food += _getFo>>
+        <<set $tool += _getTo>>
+        <<set $nowMap.deleteFirst("购物中心Ⅱ")>>
+        <<set $cloneMap.deleteFirst("购物中心Ⅱ")>>
+        <<set $cloneMap.push("购物中心Ⅱ")>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+    <<if $resource >= _upRe && $food >= _upFo>>
+      <<button "改造" "卡牌显示界面">>
+        <<set $resource -= _upRe>>
+        <<set $food -= _upFo>>
+        <<set $nowMap.deleteFirst("购物中心Ⅱ")>>
+        <<set $cloneMap.deleteFirst("购物中心Ⅱ")>>
+        <<set $cloneMap.push("购物中心Ⅲ")>>
+        <<notify 3s>>
+          改造为【购物中心Ⅲ】。
+        <</notify>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+    <<button "继续" "卡牌显示界面">>
+      <<set $nowMap.deleteFirst("购物中心Ⅱ")>>
+      <<set $cloneMap.deleteFirst("购物中心Ⅱ")>>
+      <<set $cloneMap.push("购物中心Ⅱ")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+  </div>
+</div>
+
+:: 购物中心Ⅲ
+<div class="card">
+  <div class="card-title">
+    购物中心Ⅲ
+  </div>
+  <div class="card-content">
+    <div class="search">
+    资源：1 | 工具：1<br>
+    <<set _getRe = 1, _getTo = 1>>
+    </div>
+    <div class="find">
+      1 食物<br>
+      <<set _seFo = 1>>
+    </div>
+    <div class="upgrade">
+      <div class="toolTip">
+        1 工具 | 1 食物<br>
+        <span class="toolTipText">
+          购物中心Ⅳ<br>
+          资源：1 | 食物：1 | 工具：1<br>
+        </span>
+        <<set _upTo = 1, _upFo = 1>>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<if $food >= _seFo>>
+      <<button "搜索" "卡牌显示界面">>
+        <<set $food -= _seFo>>
+        <<set $resource += _getRe>>
+        <<set $tool += _getTo>>
+        <<set $nowMap.deleteFirst("购物中心Ⅲ")>>
+        <<set $cloneMap.deleteFirst("购物中心Ⅲ")>>
+        <<set $cloneMap.push("购物中心Ⅲ")>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+    <<if $tool >= _upTo && $food >= _upFo>>
+      <<button "改造" "卡牌显示界面">>
+        <<set $tool -= _upTo>>
+        <<set $food -= _upFo>>
+        <<set $nowMap.deleteFirst("购物中心Ⅲ")>>
+        <<set $cloneMap.deleteFirst("购物中心Ⅲ")>>
+        <<set $cloneMap.push("购物中心Ⅳ")>>
+        <<notify 3s>>
+          改造为【购物中心Ⅳ】。
+        <</notify>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+    <<button "继续" "卡牌显示界面">>
+      <<set $nowMap.deleteFirst("购物中心Ⅲ")>>
+      <<set $cloneMap.deleteFirst("购物中心Ⅲ")>>
+      <<set $cloneMap.push("购物中心Ⅲ")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+  </div>
+</div>
+
+:: 购物中心Ⅳ
+<div class="card">
+  <div class="card-title">
+    购物中心Ⅳ
+  </div>
+  <div class="card-content">
+    <div class="search">
+      资源：1 食物：1 | 工具：1<br>
+      <<set _getRe = 1, _getFo = 1, _getTo = 1>>
+    </div>
+    <div class="find">
+      ''Ⅰ''：1 资源<br>
+      ''Ⅱ''：1 食物<br>
+      ''Ⅲ''：1 工具<br>
+      <<set _seRe = 1, _seFo = 1, _seTo = 1>>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<if $resource >= _seRe>>
+      <<button "搜索Ⅰ" "卡牌显示界面">>
+        <<set $resource -= _seRe>>
+        <<set $resource += _getRe>>
+        <<set $food += _getFo>>
+        <<set $tool += _getTo>>
+        <<set $nowMap.deleteFirst("购物中心Ⅳ")>>
+        <<set $cloneMap.deleteFirst("购物中心Ⅳ")>>
+        <<set $cloneMap.push("购物中心Ⅳ")>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+    <<if $food >= _seFo>>
+      <<button "搜索Ⅱ" "卡牌显示界面">>
+        <<set $food -= _seFo>>
+        <<set $resource += _getRe>>
+        <<set $food += _getFo>>
+        <<set $tool += _getTo>>
+        <<set $nowMap.deleteFirst("购物中心Ⅳ")>>
+        <<set $cloneMap.deleteFirst("购物中心Ⅳ")>>
+        <<set $cloneMap.push("购物中心Ⅳ")>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+    <<if $tool >= _seTo>>
+      <<button "搜索Ⅲ" "卡牌显示界面">>
+        <<set $tool -= _seTo>>
+        <<set $resource += _getRe>>
+        <<set $food += _getFo>>
+        <<set $tool += _getTo>>
+        <<set $nowMap.deleteFirst("购物中心Ⅳ")>>
+        <<set $cloneMap.deleteFirst("购物中心Ⅳ")>>
+        <<set $cloneMap.push("购物中心Ⅳ")>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+    <<button "继续" "卡牌显示界面">>
+      <<set $nowMap.deleteFirst("购物中心Ⅳ")>>
+      <<set $cloneMap.deleteFirst("购物中心Ⅳ")>>
+      <<set $cloneMap.push("购物中心Ⅳ")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+  </div>
+</div>
+
+:: 仓库Ⅰ
+<div class="card">
+  <div class="card-title">
+    仓库Ⅰ
+  </div>
+  <div class="card-content">
+    <div class="upgrade">
+      <div class="toolTip">
+        ''Ⅰ''：1 资源 | 1 食物<br>
+        <span class="toolTipText">
+          仓库Ⅱ<br>
+          资源：1 | 食物：1<br>
+        </span>
+      </div>
+      <div class="toolTip">
+        ''Ⅱ''：1 资源 | 1 食物 |<br> 2 工具<br>
+        <span class="toolTipText">
+          仓库Ⅲ<br>
+          战斗力：4<br>
+        </span>
+      </div>
+    <<set _upRe = 1, _upFo = 1, _upTo = 2>>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<if $resource >= _upRe && $food >= _upFo>>
+      <<button "改造Ⅰ" "卡牌显示界面">>
+        <<set $resource -= _upRe>>
+        <<set $food -= _upFo>>
+        <<set $nowMap.deleteFirst("仓库Ⅰ")>>
+        <<set $cloneMap.deleteFirst("仓库Ⅰ")>>
+        <<set $cloneMap.push("仓库Ⅱ")>>
+        <<notify 3s>>
+          改造为【仓库Ⅱ】。
+        <</notify>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+    <<if $resource >= _upRe && $food >= _upFo && $tool >= _upTo>>
+      <<button "改造Ⅱ" "卡牌显示界面">>
+        <<set $resource -= _upRe>>
+        <<set $food -= _upFo>>
+        <<set $tool -= _upTo>>
+        <<set $nowMap.deleteFirst("仓库Ⅰ")>>
+        <<set $cloneMap.deleteFirst("仓库Ⅰ")>>
+        <<set $cloneMap.push("仓库Ⅲ")>>
+        <<notify 3s>>
+          改造为【仓库Ⅲ】。
+        <</notify>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+    <<button "继续" "卡牌显示界面">>
+      <<set $nowMap.deleteFirst("仓库Ⅰ")>>
+      <<set $cloneMap.deleteFirst("仓库Ⅰ")>>
+      <<set $cloneMap.push("仓库Ⅰ")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+  </div>
+</div>
+
+:: 仓库Ⅱ
+<div class="card">
+  <div class="card-title">
+    仓库Ⅱ
+  </div>
+  <div class="card-content">
+    <div class="search">
+      资源：1 | 食物：1<br>
+      <<set _getRe = 1, _getFo = 1>>
+    </div>
+    <div class="upgrade">
+      <div class="toolTip">
+        1 资源 | 1 食物 | 1 工具<br>
+        <span class="toolTipText">
+          仓库Ⅳ<br>
+          资源：1 | 食物：1 | 工具：1<br>
+        </span>
+        <<set _upRe = 1, _upFo = 1, _upTo = 1>>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<if $resource >= _upRe && $food >= _upFo && $tool >= _upTo>>
+      <<button "改造" "卡牌显示界面">>
+        <<set $resource -= _upRe>>
+        <<set $food -= _upFo>>
+        <<set $tool -= _upTo>>
+        <<set $nowMap.deleteFirst("仓库Ⅱ")>>
+        <<set $cloneMap.deleteFirst("仓库Ⅱ")>>
+        <<set $cloneMap.push("仓库Ⅳ")>>
+        <<notify 3s>>
+          改造为【仓库Ⅳ】。
+        <</notify>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+    <<button "搜索" "卡牌显示界面">>
+      <<set $resource += _getRe>>
+      <<set $food += _getFo>>
+      <<set $nowMap.deleteFirst("仓库Ⅱ")>>
+      <<set $cloneMap.deleteFirst("仓库Ⅱ")>>
+      <<set $cloneMap.push("仓库Ⅱ")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+  </div>
+</div>
+
+:: 仓库Ⅲ
+<div class="card">
+  <div class="card-title">
+    仓库Ⅲ
+  </div>
+  <div class="card-content">
+    <div class="search">
+      战斗力：4<br>
+      <<set _getFi = 4>>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<button "继续" "卡牌显示界面">>
+      <<set $fight += _getFi>>
+      <<set $nowMap.deleteFirst("仓库Ⅲ")>>
+      <<set $cloneMap.deleteFirst("仓库Ⅲ")>>
+      <<set $cloneMap.push("仓库Ⅲ")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+  </div>
+</div>
+
+:: 仓库Ⅳ
+<div class="card">
+  <div class="card-title">
+    仓库Ⅳ
+  </div>
+  <div class="card-content">
+    <div class="search">
+      资源：1 食物：1 工具：1<br>
+      <<set _getRe = 1, _getFo = 1, _getTo = 1>>
+    </div>
+    <div class="upgrade">
+      <div class="toolTip">
+        2 资源 | 2 食物 | 2 工具<br>
+        <span class="toolTipText">
+          仓库Ⅲ<br>
+          战斗力：4<br>
+        </span>
+      </div>
+    <<set _upRe = 2, _upFo = 2, _upTo = 2>>
+    </div>
+  </div>
+  <div class="card-footer">
+    <<button "搜索" "卡牌显示界面">>
+      <<set $resource += _getRe>>
+      <<set $food += _getFo>>
+      <<set $tool += _getTo>>
+      <<set $nowMap.deleteFirst("仓库Ⅳ")>>
+      <<set $cloneMap.deleteFirst("仓库Ⅳ")>>
+      <<set $cloneMap.push("仓库Ⅳ")>>
+      <<include "重置主页显示卡牌">>
+    <</button>>
+    <<if $resource >= _upRe && $food >= _upFo && $tool >= _upTo>>
+      <<button "改造" "卡牌显示界面">>
+        <<set $resource -= _upRe>>
+        <<set $food -= _upFo>>
+        <<set $tool -= _upTo>>
+        <<set $nowMap.deleteFirst("仓库Ⅳ")>>
+        <<set $cloneMap.deleteFirst("仓库Ⅳ")>>
+        <<set $cloneMap.push("仓库Ⅲ")>>
+        <<notify 3s>>
+          改造为【仓库Ⅲ】。
+        <</notify>>
+        <<include "重置主页显示卡牌">>
+      <</button>>
+    <</if>>
+  </div>
+</div>
+
+:: 积分结算
+<<set $scores = $hp + $fight + $food + $resource + $tool>>
+<<run save("showScores", { scores: $scores, time: $nowTime })>>
+
+<div style="text-align: center">
+  当前生命值：$hp。<br>
+  当前战斗力：$fight。<br>
+  剩余食物：$food。<br>
+  剩余资源：$resource。<br>
+  剩余工具：$tool。<br>
+  <br>
+  本次游戏，你共获得了 $scores 分。<br>
+  <br>
+  游戏结束，欢迎点击左侧边栏''RESTART''继续挑战！
+</div>

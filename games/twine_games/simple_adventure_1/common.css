@@ -1,0 +1,397 @@
+#ui-bar-body>:not(:first-child) {
+  margin-top: 0;
+}
+
+#ui-dialog-titlebar {
+  border-radius: 10px 10px 0 0
+}
+
+#ui-dialog-body {
+  border-radius: 0 0 10px 10px
+}
+
+#ui-dialog-close {
+  border-radius: 0 10px 0 0
+}
+
+#ui-dialog-body button {
+  border-radius: 5px
+}
+
+.side-bar-link {
+  display: flex;
+  justify-content: center;  /* 水平居中 */
+  align-items: center;      /* 垂直居中 */
+  font-size: 14px;
+}
+
+.side-bar-link a {
+  width: calc(100% - 5px);
+  margin: 10px 2px;
+  padding: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+  color: #ccc;
+}
+
+.side-bar-link a:hover {
+  color: #0cbc3e;
+  border: 1px solid #0cbc3e;
+  background-color: rgba(255, 255, 255, 0.1);
+  font-weight: 700;
+} 
+
+.gold {
+  display: block;
+  margin: 5px 4px;
+  /* padding: 5px; */
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+  width: calc(20% - 8px);
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.start a {
+  padding: 10px 15px;
+  border: 1px solid rgba(5, 5, 5, 0.5);
+  border-radius: 5px;
+  background-color: gold;
+  width: calc(20% - 5px);
+  height: 200px;
+  font-size: 16px;
+  font-weight: 700;
+  /* text-align: center;
+  line-height: 200px; */
+  text-decoration: none;
+  color: #191818;
+}
+
+.start a:hover {
+  color: gold;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.search {
+  display: inline-block;
+  margin-bottom: 15px;
+  padding: 2px 3px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 15px;
+  width: 90%;
+  background-color: rgba(40, 195, 169, 0.7);
+}
+
+.find {
+  display: inline-block;
+  margin-bottom: 15px;
+  padding: 2px 3px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  width: 90%;
+  background-color: rgba(45, 66, 223, 0.7);
+}
+
+.upgrade {
+  display: inline-block;
+  padding: 2px 3px;
+  margin-bottom: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 15px;
+  width: 90%;
+  background-color: rgba(199, 151, 23, 0.7);
+}
+
+
+
+
+
+
+/* 属性条 */
+.showStates {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.states-bar {
+  flex-grow: 1;
+  width: calc(100% - 10px);
+  height: 20px;
+  background: linear-gradient(to bottom, #555, #333);
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.2),
+    inset 0 -1px 2px rgba(255, 255, 255, 0.1);
+  position: relative;
+  /* 添加相对定位 */
+}
+
+.states-bar-fill {
+  height: 100%;
+  background: linear-gradient(to right, #4CAF50, #81C784);
+  transition: width 0.1s linear;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 0.8em;
+  color: white;
+  box-shadow:
+    3px 0 6px -1px rgba(255, 255, 255, 0.5),
+    inset 0 2px 4px rgba(255, 255, 255, 0.3),
+    inset 0 -3px 5px rgba(0, 0, 0, 0.3);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.states-bar-text {
+  position: absolute;
+  left: 50%;
+  /* 水平居中 */
+  top: 50%;
+  /* 垂直居中 */
+  transform: translate(-50%, -50%);
+  /* 精确居中 */
+  line-height: 20px;
+  font-size: 12px;
+  color: white;
+  z-index: 2;
+  text-align: center;
+}
+
+.someBtn a {
+  margin: 5px 2px;
+  padding: 10px 20px;
+  color: #eee;
+  border-radius: 5px;
+  background-color: #158;
+  text-decoration: none;
+}
+
+.someBtn a:hover {
+  color: rgb(235, 52, 52);
+  background-color: #27a;
+}
+
+/* 状态面板整体布局 */
+.status {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* 上部战斗/非战斗属性容器 */
+.status-top {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+/* 战斗属性（左） */
+.fight-status {
+  text-align: left;
+  width: calc(50% - 5px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+  margin-right: 4px;
+  padding: 1rem 2rem;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* 非战斗属性（右） */
+.unfight-status {
+  text-align: left;
+  width: calc(50% - 5px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+  margin-left: 4px;
+  padding: 1rem 2rem;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* 下部装备栏容器 */
+.equip-bar {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.equip-item {
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* 物品栏 */
+.bag-title {
+  width: 100%;
+  padding: 0 0.5rem 0.5rem 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* 分配属性按钮 */
+.pointBtn button {
+  border-radius: 5px;
+  opacity: 0.8;
+  margin: 2px;
+}
+
+/* 卡片样式 */
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem; /* 卡片之间的间距 */
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 30%;
+  min-height: 400px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+  background-color: rgba(152, 143, 143, 0.3);
+  margin: 0.5rem;
+  padding: 15px;
+  text-align: center;
+  overflow: hidden;
+  position: relative; /* 新增相对定位 */
+}
+
+/* 调整后的卡片标题 */
+.card-title {
+  padding-bottom: 5px;
+  border-bottom: 1px solid #ccc;
+  font-weight: 700;
+  font-size: 18px;
+  color: #5ed164;
+  flex: 0 0 10%; /* 固定高度占比10%（不收缩、不拉伸） */
+}
+
+/* 调整后的卡片内容区（关键修改：增加滚动支持） */
+.card-content {
+  text-align: center;
+  /* padding-top: 15px; */
+  flex: 1 1 70%; /* 占比70%（可拉伸/收缩） */
+}
+
+/* 调整后的卡片底部 */
+.card-footer {
+  flex: 0 0 20%; /* 固定高度占比15%（不收缩、不拉伸） */
+  margin-top: auto;
+}
+
+.card button {
+  margin: 2px auto;
+  padding: 5px 10px;
+  color: #eee;
+  border-radius: 5px;
+  background-color: #158;
+  text-decoration: none;
+}
+
+.card button:hover {
+  color: rgb(26, 11, 11);
+  background-color: #27a;
+}
+
+.open-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; /* 占据卡片全部高度 */
+  padding: 20% 0; /* 增加垂直间距 */
+  margin: auto; /* 新增居中定位 */
+}
+
+.open-card button {
+  padding: 10px 20px;
+  margin: auto; /* 确保按钮居中 */
+  transform: translateY(0); /* 移除可能的位移 */
+}
+
+.card-title {
+  padding-bottom: 5px;
+  border-bottom: 1px solid #ccc;
+  font-weight: 700;
+  font-size: 18px;
+  color: #5ed164;
+}
+
+.card-content {
+  display: block;
+  height: 70%;
+  text-align: center;
+  padding-top: 15px;
+}
+
+.card-footer {
+  display: block;
+  height: 15%;
+}
+
+/*----提示工具css----*/
+.toolTip {
+  position: relative;
+  display: inline-block;
+  /* border-bottom: 1px dotted white; */
+}
+
+.toolTip .toolTipText {
+  visibility: hidden;
+  width: 120px;
+  background-color: rgba(0, 0, 0, 0.8); /* 透明度为0.3的月白色背景 */
+  color: #98ff98; /* 薄荷绿文字颜色 */
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.5s;
+  pointer-events: none; /* 防止toolTip被鼠标事件触发 */
+  border: 1px solid black; /* 添加1px黑色边缘轮廓 */
+  font-size: 14px;
+}
+
+.toolTip .toolTipText::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: rgba(255, 250, 250, 0.7) transparent}
+
+  .toolTip .toolTipText::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: rgba(255, 250, 250, 0.7) transparent transparent; /* 箭头颜色与背景一致 */
+}
+
+.toolTip:hover .toolTipText {
+  visibility: visible;
+  opacity: 1;
+}
