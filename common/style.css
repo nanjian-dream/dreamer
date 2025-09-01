@@ -89,6 +89,14 @@ body {
   color: #888;
 }
 
+.dropdown li {
+  margin-bottom: 5px;
+}
+
 .bunner ul li:hover .dropdown {
   display: block;
+}
+
+.dropdown a:hover {
+  text-decoration: underline;
 }

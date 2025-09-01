@@ -20,8 +20,8 @@
     <div class="controls">
       <div class="control-group">
         <label for="font-size">字体大小:</label>
-        <input type="range" id="font-size" min="14" max="24" value="18" step="1">
-        <span id="font-size-value">18px</span>
+        <input type="range" id="font-size" min="14" max="24" value="14" step="1">
+        <span id="font-size-value">14px</span>
       </div>
 
       <div class="control-group">
@@ -154,7 +154,7 @@
       <p>踏入深渊的那一刻，黑暗包裹着我，失去的部分源源不断地返回我的身体。</p>
       <p>我在海底行走，在水中跳跃。</p>
       <p>我回来了。</p>
-      <p></p>
+      <br>
       <p>完</p>
       <p>22.11.29</p>
     </div>
@@ -170,6 +170,9 @@
     const fontSizeSlider = document.getElementById('font-size');
     const fontSizeValue = document.getElementById('font-size-value');
     const content = document.getElementById('novel-content');
+
+    // 初始化字体大小为 14px
+    content.style.fontSize = '14px';
 
     fontSizeSlider.addEventListener('input', function () {
       const size = this.value;

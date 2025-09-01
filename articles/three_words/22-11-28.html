@@ -20,8 +20,8 @@
     <div class="controls">
       <div class="control-group">
         <label for="font-size">字体大小:</label>
-        <input type="range" id="font-size" min="14" max="24" value="18" step="1">
-        <span id="font-size-value">18px</span>
+        <input type="range" id="font-size" min="14" max="24" value="14" step="1">
+        <span id="font-size-value">14px</span>
       </div>
 
       <div class="control-group">
@@ -146,7 +146,7 @@
       <p>我展开双臂，化成一触即碎的泡沫，回到海洋的怀抱。</p>
       <p>海的女儿们与我牵手，拥吻，缠绵。</p>
       <p>我看到海洋深处，矗立着人类文明永不可及的巍峨宫殿，花园里盛开着人类词汇无法描述的绚丽色彩的、永不凋零的花。</p>
-      <p></p>
+      <br>
       <p>完</p>
       <p>11.22.28</p>
     </div>
@@ -162,6 +162,9 @@
     const fontSizeSlider = document.getElementById('font-size');
     const fontSizeValue = document.getElementById('font-size-value');
     const content = document.getElementById('novel-content');
+
+    // 初始化字体大小为 14px
+    content.style.fontSize = '14px';
 
     fontSizeSlider.addEventListener('input', function () {
       const size = this.value;
