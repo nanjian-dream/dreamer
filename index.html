@@ -1,84 +1,298 @@
 <!DOCTYPE html>
 <html lang="ch-ZN">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>呓界</title>
-  <link rel="stylesheet" href="./common/style.css">
+  <!-- 使用网站logo作为favicon -->
+  <link rel="icon" type="image/svg+xml" href="./imgs/yijie-blog-logo.svg">
+  <link rel="alternate icon" href="./favicon.ico" type="image/x-icon">
+  <!-- 引入 font-awesome 图标库 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/common.css">
+  <link rel="stylesheet" href="./css/index.css">
 </head>
+
 <body>
-  <div class="box">
-    <div class="title" style="margin-bottom: 10px;">
-      <span style="font-size: 34px; font-weight: 700; padding-left: 10%;">呓界</span>
-      <span style="font-size: 14px;">南间黄粱，一梦天荒</span>
+  <!-- 1. 网页的头部 -->
+  <header class="header w">
+    <div class="logo">
+      <h1><a href="./index.html" title="呓界">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+            <image href="./imgs/yijie-blog-logo.svg" width="100%" height="100%" />
+          </svg>
+        </a></h1>
     </div>
-    <div class="bunner">
-      <ul>
-        <li>
-          <a href="./index.html">首页</a>
-        </li>
-        <li>
-          <a href="#">
-            小说
-            <ul class="dropdown">
-              <!-- <li><a href="#">长篇</a></li> -->
-              <!-- <li><a href="#">短篇</a></li> -->
-              <li><a href="./articles/three_words/threewords.html">三题</a></li>
-            </ul>
-          </a>
-        </li>
-        <li>
-          <a href="./games/games.html">
-            游戏
-            <ul class="dropdown">
-              <li><a href="#">Twine</a></li>
-              <li><a href="#">Inky</a></li>
-            </ul>
-          </a>
-        </li>
-        <li>
-          <a href="./others/update.html">更新日志</a>
-        </li>
-        <li>
-          <a href="#tele">联系作者</a>
-        </li>
-      </ul>
-    </div>
-    <div class="content">
-      <div class="index active">
-        <div>
-          <h2>- 三题</h2>
-          <ul>
-            <li><a href="./articles/three_words/22-12-6.html" target="_blank">旋律 拒绝 河川</a></li>
-            <li><a href="./articles/three_words/22-12-8.html" target="_blank">触角 新生 战争</a></li>
-            <li><a href="./articles/three_words/22-12-9.html" target="_blank">雪人 镜子 方块</a></li>
-            <li><a href="./articles/three_words/23-2-2.html" target="_blank">光辉 深蓝 季节</a></li>
-          </ul>
-        </div>
-        <div class="twine-games">
-          <h2>- Twine 游戏</h2>
-          <ul>
-            <li><a href="./games/twine_games/simple_adventure_1/index.html" target="_blank">简单简单的冒险Ⅰ</a></li>
-            <li><a href="./games/twine_games/doomsday_bunker/index.html" target="_blank">末日地堡</a></li>
-          </ul>
-        </div>
-        <div class="inky-games">
-          <h2>- Inky 游戏</h2>
-          <ul>
-            <li><a href="./games/inky_games/river-crossing/index.html" target="_blank">过河</a></li>
-            <li><a href="./games/inky_games/houseInMist/雾中迷屋/index.html" target="_blank">雾中迷屋</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="tele" id="tele">
-        <h2>- 联系作者</h2>
-        <ul>
-          <li><p>如果您有任何问题或建议，请通过以下方式联系我：</p></li>
-          <li>作者：南间梦</li>
-          <li>QQ: 625809544</li>
-          <li>Email: 625809544@qq.com</li>
+    <ul class="nav">
+      <li><a href="./index.html"><i class="fa-solid fa-house"></i>首页</a></li>
+      <li>
+        <!-- 小说 -->
+        <a><i class="fa-solid fa-book-reader"></i>文章</a>
+        <ul class="dropdown">
+          <li><a href="./articles/long-novel/longnovel.html">长篇小说</a></li>
+          <li><a href="./articles/short-novel/shortnovel.html">短篇小说</a></li>
+          <li><a href="./articles/three-words/threewords.html">三题</a></li>
+          <li><a href="./articles/others/otherarticles.html">其他</a></li>
         </ul>
+      </li>
+      <li><a href="./games/games.html"><i class="fa-solid fa-gamepad"></i>游戏</a></li>
+      <li><a href="./update/update.html"><i class="fa-solid fa-file"></i>更新日志</a></li>
+      <li><a href="#tele"><i class="fa-solid fa-phone"></i>联系我</a></li>
+    </ul>
+    <div class="search">
+      <input type="text" placeholder="搜索">
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </div>
+    <div class="theme day">白</div>
+  </header>
+  <!-- 2. 网页的主体内容 -->
+  <main class="main w">
+    <article>
+      <!-- <div class="cards long-novel">
+        <div class="cards-title">
+          <h2>长篇小说</h2>
+        </div>
+        <div class="cards-content">
+          <ul>
+            <li>
+              <div class="card">
+                <div class="card-title">
+                  <a href="#" class="novel-name">书名</a>
+                  <a href="#" class="novel-chapter">章节</a>
+                </div>
+                <div class="card-content">
+                  小说内容
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="card">
+                <div class="card-title">
+                  <a href="#" class="novel-name">书名</a>
+                  <a href="#" class="novel-chapter">章节</a>
+                </div>
+                <div class="card-content">
+                  小说内容
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
-  </div>
+
+      <div class="cards short-novel">
+        <div class="cards-title">
+          <h2>短篇小说</h2>
+        </div>
+        <div class="cards-content">
+          <ul>
+            <li>
+              <div class="card">
+                <div class="card-title">
+                  <a href="#" class="novel-name">书名</a>
+                  <span class="novel-chapter">[时间]</span>
+                </div>
+                <div class="card-content">
+                  小说内容
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div> -->
+
+      <div class="cards short-novel">
+        <div class="cards-title">
+          <a href="./articles/three-words/threewords.html">
+            <h2>三题</h2>
+          </a>
+        </div>
+        <div class="cards-content">
+          <ul>
+            <li>
+              <div class="card">
+                <div class="card-title other-title">
+                  <a href="./articles/three-words/t9.html" class="novel-name" target="_blank">光辉 深蓝 季节</a>
+                  <span class="novel-chapter">[2025-9-1]</span>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="card">
+                <div class="card-title other-title">
+                  <a href="./articles/three-words/t8.html" class="novel-name" target="_blank">雪人 镜子 方块</a>
+                  <span class="novel-chapter">[2025-9-1]</span>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="card">
+                <div class="card-title other-title">
+                  <a href="./articles/three-words/t7.html" class="novel-name" target="_blank">触角 新生 战争</a>
+                  <span class="novel-chapter">[2025-9-1]</span>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="cards short-novel">
+        <div class="cards-title">
+          <a href="./articles/others/otherarticles.html">
+            <h2>其他文章</h2>
+          </a>
+        </div>
+        <div class="cards-content">
+          <ul>
+            <li>
+              <div class="card">
+                <div class="card-title other-title">
+                  <a href="./articles/others/o1.html" class="novel-name" target="_blank">《周四推理俱乐部》读书笔记</a>
+                  <span class="novel-chapter">[2025-9-18]</span>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="cards short-novel">
+        <div class="cards-title">
+          <a href="./games/games.html">
+            <h2>游戏</h2>
+          </a>
+        </div>
+        <div class="cards-content">
+          <ul>
+            <li>
+              <div class="card">
+                <div class="card-title other-title">
+                  <a href="./games/inky_games/houseInMist/雾中迷屋/index.html" class="novel-name" target="_blank">雾中迷屋</a>
+                  <span class="novel-chapter">[2025-8-29]</span>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="card">
+                <div class="card-title other-title">
+                  <a href="./games/twine_games/doomsday_bunker/index.html" class="novel-name" target="_blank">末日地堡</a>
+                  <span class="novel-chapter">[2025-8-14]</span>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="card">
+                <div class="card-title other-title">
+                  <a href="./games/twine_games/simple_adventure_1/index.html" class="novel-name"
+                    target="_blank">简单简单的冒险Ⅰ</a>
+                  <span class="novel-chapter">[2025-8-14]</span>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </article>
+    <!-- 个人简介 -->
+    <aside>
+      <div class="profile">
+        <div class="profile-avatar">
+          <img src="./imgs/avatar1.png" alt="头像">
+        </div>
+        <div class="profile-title">
+          <h2>南间梦</h2>
+        </div>
+        <div class="profile-content">
+          <p>我是南间梦，一个喜欢游戏的人。</p>
+          <p>我喜欢在游戏中与其他玩家互动，与不同的人分享我的游戏经历。</p>
+          <p>我也喜欢在游戏中与其他玩家合作，一起完成游戏中的任务。</p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- <div class="games-box">
+      <div class="arrow">
+        <i class="fas fa-chevron-left"></i>
+      </div>
+
+      <div class="game-cards">
+        <div class="game-card">
+          <div class="game-title">游戏名称</div>
+          <div class="game-desc">游戏描述</div>
+          <div class="game-play">
+            <a href="#">
+              前往游戏
+            </a>
+          </div>
+        </div>
+        <div class="game-card">
+          <div class="game-title">游戏名称</div>
+          <div class="game-desc">游戏描述</div>
+          <div class="game-play">
+            <a href="#" class="game-play-btn">
+              前往游戏
+            </a>
+          </div>
+        </div>
+        <div class="game-card">
+          <div class="game-title">游戏名称</div>
+          <div class="game-desc">游戏描述</div>
+          <div class="game-play">
+            <a href="#" class="game-play-btn">
+              前往游戏
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow">
+        <i class="fas fa-chevron-right"></i>
+      </div>
+    </div> -->
+  </main>
+  <!-- 回到顶部按钮 -->
+  <!-- <div class="back-top">
+    <a href="#">
+      回到顶部
+    </a>
+  </div> -->
+  <!-- 3. 网页的底部 -->
+  <footer>
+    <div class="container">
+      <div class="footer-content w">
+        <div class="footer-section">
+          <h3>关于博客</h3>
+          <p>呓界是一个个人博客，分享原创小说、游戏相关内容。</p>
+          <p>南间黄粱，一梦天荒...</p>
+        </div>
+        <!-- <div class="footer-section">
+            <h3>链接</h3>
+            <p><a href="#" style="color: #bbb;">文章分类</a></p>
+            <p><a href="#" style="color: #bbb;">时间归档</a></p>
+            <p><a href="#" style="color: #bbb;">友情链接</a></p>
+          </div> -->
+        <div class="footer-section" id="tele">
+          <h3>联系我</h3>
+          <p><i class="fas fa-user"></i> 南间梦</p>
+          <p><i class="fas fa-envelope"></i> 625809544@qq.com</p>
+          <p><i class="fas fa-map-marker-alt"></i> 中国，四川成都</p>
+          <!-- <div class="social-links">
+                <a href="#"><i class="fab fa-weibo"></i></a>
+                <a href="#"><i class="fab fa-weixin"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+            </div> -->
+        </div>
+      </div>
+      <div class="footer-bottom w">
+        <p>© 2025 呓界 - 所有权利保留</p>
+      </div>
+    </div>
+  </footer>
 </body>
+
 </html>

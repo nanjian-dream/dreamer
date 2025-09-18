@@ -1,0 +1,179 @@
+main {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  /* position: relative; */
+}
+
+main article {
+  order: 1;
+  flex: 0 0 calc(70% - 10px);
+}
+
+main aside {
+  order: 2;
+  flex: 0 0 calc(30% - 10px);
+}
+
+.cards {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  margin-top: 10px;
+  margin-left: 20px;
+  padding: 20px 30px;
+  background-color: #f7f7f7;
+}
+
+.cards-title {
+  font-size: 1.2rem;
+  padding-left: 1em;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.cards-content ul {
+  display: flex;
+  /* 卡片内容换行 */
+  flex-wrap: wrap;
+}
+
+.cards-content ul li {
+  width: 100%;
+  padding: 0 20px;
+}
+
+.cards-content .card {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #fff;
+}
+
+.cards-content .card .card-title {
+  padding-left: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #ccc;
+}
+
+.cards-content .card .other-title {
+  border-bottom: none;
+}
+
+.cards-content .card .card-title .novel-name {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.cards-content .card .card-title .novel-chapter {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.cards-content .card .card-content {
+  padding: 10px;
+}
+
+.games-box {
+  order: 3;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+  width: 100%;
+  margin-top: 10px;
+  margin-left: 20px;
+  padding: 20px 30px;
+  background-color: #f7f7f7;
+}
+
+.games-box .arrow i {
+  font-size: 2rem;
+}
+
+.games-box .arrow i:hover {
+  color: #4a6cf7;
+}
+
+.games-box .game-cards {
+  display: flex;
+  gap: 30px;
+}
+
+.games-box .game-card {
+  width: 250px;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  padding: 20px 30px;
+  background-color: #fff;
+  /* 阴影 */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  /* 过渡 */
+  transition: all 0.2s ease-in-out;
+}
+
+.games-box .game-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.games-box .game-card .game-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding-bottom: 5px;
+  /* border-bottom: 1px solid #ccc; */
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.games-box .game-card .game-desc {
+  padding: 10px 20px;
+}
+
+.games-box .game-card .game-play {
+  text-align: center;
+}
+
+.games-box .game-card .game-play a {
+  font-weight: 500;
+  color: #4a6cf7;
+}
+
+.games-box .game-card .game-play a:hover {
+  color: #19ae43;
+  font-weight: 600;
+}
+
+/* 个人简介 */
+.profile {
+  width: calc(100% - 10px);
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  margin: 10px;
+  padding: 10px;
+  background-color: #f7f7f7;
+}
+
+.profile .profile-avatar {
+  width: 100%;
+  height: 350px;
+  border-radius: 18px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.profile .profile-avatar img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.profile .profile-title {
+  text-align: center;
+}
+
+.profile .profile-content {
+  padding: 10px 20px;
+}
