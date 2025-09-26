@@ -78,9 +78,8 @@ main aside {
 .games-box {
   order: 3;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  gap: 30px;
   width: 100%;
   margin-top: 10px;
   margin-left: 20px;
@@ -88,61 +87,57 @@ main aside {
   background-color: #f7f7f7;
 }
 
-.games-box .arrow i {
+/* .games-box .arrow i {
   font-size: 2rem;
 }
 
 .games-box .arrow i:hover {
   color: #4a6cf7;
+} */
+
+.game-list li a {
+  width: 210px;
+  height: 300px;
 }
 
-.games-box .game-cards {
-  display: flex;
-  gap: 30px;
+/* 轮播图关键帧 */
+/* 自动轮播 */
+@keyframes circle {
+
+  0%,
+  10% {
+    transform: translateX(0);
+  }
+
+  20%,
+  30% {
+    transform: translateX(-210px);
+  }
+
+  40%,
+  50% {
+    transform: translateX(-420px);
+  }
+
+  60%,
+  70% {
+    transform: translateX(-620px);
+  }
+
+  80%,
+  90% {
+    transform: translateX(-840px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
 }
 
-.games-box .game-card {
-  width: 250px;
-  border: 1px solid #ccc;
-  border-radius: 15px;
-  padding: 20px 30px;
-  background-color: #fff;
-  /* 阴影 */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  /* 过渡 */
-  transition: all 0.2s ease-in-out;
-}
-
-.games-box .game-card:hover {
+.games-box .game-list a:hover {
   transform: translateY(-5px);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-}
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
 
-.games-box .game-card .game-title {
-  font-size: 1.2rem;
-  font-weight: bold;
-  padding-bottom: 5px;
-  /* border-bottom: 1px solid #ccc; */
-  text-align: center;
-  letter-spacing: 1px;
-}
-
-.games-box .game-card .game-desc {
-  padding: 10px 20px;
-}
-
-.games-box .game-card .game-play {
-  text-align: center;
-}
-
-.games-box .game-card .game-play a {
-  font-weight: 500;
-  color: #4a6cf7;
-}
-
-.games-box .game-card .game-play a:hover {
-  color: #19ae43;
-  font-weight: 600;
 }
 
 /* 个人简介 */
@@ -166,7 +161,7 @@ main aside {
 .profile .profile-avatar img {
   width: 100%;
   height: auto;
-  object-fit: cover;
+  object-fit: center/cover;
 }
 
 .profile .profile-title {

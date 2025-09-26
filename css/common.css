@@ -173,7 +173,7 @@ footer {
 
 .footer-content {
   display: flex;
-  gap: 40px;
+  gap: 150px;
   margin-bottom: 50px;
   justify-content: space-start;
   align-items: center;
